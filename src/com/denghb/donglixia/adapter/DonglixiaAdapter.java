@@ -59,7 +59,7 @@ public class DonglixiaAdapter extends BaseAdapter {
 
 		ViewHolder viewholder = null;
 		if (null == convertView) {
-			convertView = mLayoutInflater.inflate(R.layout.donglixia_item, null);
+			convertView = mLayoutInflater.inflate(R.layout.donglixia_item, parent,false);
 
 			viewholder = new ViewHolder();
 			viewholder.imageView = (ImageView) convertView.findViewById(R.id.donglixia_image);
@@ -77,7 +77,7 @@ public class DonglixiaAdapter extends BaseAdapter {
 		mImageFetcher.loadImage(donglixia.getUrl(), viewholder.imageView);
 
 		LayoutParams lp = new LayoutParams(convertView.getLayoutParams());
-		lp.span = 3;
+		lp.span = 2;
 		convertView.setLayoutParams(lp);
 		return convertView;
 	}

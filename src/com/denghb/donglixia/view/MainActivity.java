@@ -189,33 +189,27 @@ public class MainActivity extends Activity {
 		}
 
 		public List<Donglixia> parseNewsJSON(String url) throws IOException {
-			List<Donglixia> duitangs = new ArrayList<Donglixia>();
+			List<Donglixia> donglixias = new ArrayList<Donglixia>();
 			String json = "";
 			if (Helper.checkConnection(mContext)) {
 				try {
 					json = Helper.getStringFromUrl(url);
-
-					json = json.substring(1, json.length());
+					
+					String de1 = json.substring(1, 9); 
+					String de2 = json.substring(10, json.length());
+					json = de1 + de2; 
+					
 					Log.i("json:", json);
 					byte[] result = Base64.decode(json, Base64.DEFAULT);
 
 					json = new String(result);
 					Log.i("data:", json);
-					/*
-					 * String de1 = ss.substring(0, 9); System.out.println("s1:"
-					 * + de1);
-					 * 
-					 * String de2 = ss.substring(10, ss.length());
-					 * System.out.println("s2:" + de2);
-					 * 
-					 * String de = de1 + de2;
-					 * 
-					 * System.out.println(new String(Base64.decode(de)));
-					 */
+					
+					 
 				} catch (IOException e) {
 					Log.e("IOException is : ", e.toString());
 					e.printStackTrace();
-					return duitangs;
+					return donglixias;
 				} catch (Exception e) {
 
 				}
@@ -226,20 +220,24 @@ public class MainActivity extends Activity {
 				if (null != json) {
 					JSONObject newsObject = new JSONObject(json);
 					// JSONObject jsonObject = newsObject.getJSONObject("data");
-					JSONArray dataJson = newsObject.getJSONArray("data");
+					JSONArray dataJson = newsObject.getJSONArray("DATA");
 
 					for (int i = 0; i < dataJson.length(); i++) {
-						String urls = dataJson.getString(i);
-						Donglixia newsInfo1 = new Donglixia();
-						newsInfo1.setUrl(urls);
-						newsInfo1.setTag("美图");
-						duitangs.add(newsInfo1);
+						
+						JSONObject obj = dataJson.getJSONObject(i);
+						String urls = obj.getString("URL");
+						String tag = obj.getString("TAG");
+						
+						Donglixia donglixia = new Donglixia();
+						donglixia.setUrl(urls);
+						donglixia.setTag(tag);
+						donglixias.add(donglixia);
 					}
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			return duitangs;
+			return donglixias;
 		}
 	}
 }
