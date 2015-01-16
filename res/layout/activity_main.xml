@@ -3,14 +3,13 @@
 	xmlns:staggered="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context=".MainActivity" >
 
     <android.support.v4.widget.StaggeredGridView
         android:id="@+id/grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        staggered:numColumns="2"
-        staggered:drawSelectorOnTop="true" />
+        android:scrollbars="vertical" />
 
 </RelativeLayout>

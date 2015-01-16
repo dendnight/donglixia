@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.support.v4.widget.StaggeredGridView.LayoutParams;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,12 +55,21 @@ public class DonglixiaAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		Log.i("position :", position + "");
 		// 东篱下属性
-		Donglixia donglixia = list.get(position);
-
+		final Donglixia donglixia = list.get(position);
 		ViewHolder viewholder = null;
+		// 头部
+		if (0 == position) {
+			View v = mLayoutInflater.inflate(R.layout.header, parent, false);
+			LayoutParams lp = new LayoutParams(v.getLayoutParams());
+			lp.span = 2;
+			v.setLayoutParams(lp);
+			return v;
+		}
+
 		if (null == convertView) {
-			convertView = mLayoutInflater.inflate(R.layout.donglixia_item, parent,false);
+			convertView = mLayoutInflater.inflate(R.layout.item, parent, false);
 
 			viewholder = new ViewHolder();
 			viewholder.imageView = (ImageView) convertView.findViewById(R.id.donglixia_image);
@@ -69,16 +79,15 @@ public class DonglixiaAdapter extends BaseAdapter {
 		} else {
 			viewholder = (ViewHolder) convertView.getTag();
 		}
-		// 处理图片
-		// viewholder.imageView.setLayoutParams(new
-		// LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ));
 
-		viewholder.tagView.setText(donglixia.getTag());
-		mImageFetcher.loadImage(donglixia.getUrl(), viewholder.imageView);
-
-		LayoutParams lp = new LayoutParams(convertView.getLayoutParams());
-		lp.span = 2;
-		convertView.setLayoutParams(lp);
+		if (null != viewholder) {
+			viewholder.tagView.setText(donglixia.getTag());
+			// 处理图片
+			mImageFetcher.loadImage(donglixia.getUrl(), viewholder.imageView);
+			LayoutParams lp = new LayoutParams(convertView.getLayoutParams());
+			lp.span = 1;
+			convertView.setLayoutParams(lp);
+		}
 		return convertView;
 	}
 

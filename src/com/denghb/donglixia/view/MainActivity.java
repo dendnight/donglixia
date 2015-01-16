@@ -3,7 +3,6 @@ package com.denghb.donglixia.view;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,15 +13,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.StaggeredGridView;
-import android.support.v4.widget.StaggeredGridView.LayoutParams;
 import android.support.v4.widget.StaggeredGridView.OnScrollListener;
 import android.util.Base64;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
 import com.denghb.donglixia.R;
 import com.denghb.donglixia.adapter.DonglixiaAdapter;
@@ -81,7 +76,7 @@ public class MainActivity extends Activity {
 		mAdapter = new DonglixiaAdapter(this, mImageFetcher, list);
 
 		mSGV = (StaggeredGridView) findViewById(R.id.grid);
-		mSGV.setColumnCount(4);
+		mSGV.setColumnCount(2);
 		mSGV.setAdapter(mAdapter);
 		mSGV.setOnScrollListener(mScrollListener);
 		String url = "http://donglixia.sinaapp.com/app/service/";
@@ -95,67 +90,6 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		// getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
-	}
-
-	private final class SGVAdapter extends BaseAdapter {
-
-		LayoutInflater mInflater;
-
-		public SGVAdapter(Context ctx) {
-			mInflater = LayoutInflater.from(ctx);
-		}
-
-		@Override
-		public int getCount() {
-			return 30;
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return null;
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return 0;
-		}
-
-		Random r = new Random();
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			final LayoutParams lp;
-			final View v;
-			switch (position) {
-			case 0:
-			case 29:
-				v = mInflater.inflate(R.layout.element_header, parent, false);
-				lp = new LayoutParams(v.getLayoutParams());
-				lp.span = mSGV.getColumnCount();
-				break;
-			case 8:
-			case 9:
-			case 18:
-			case 19:
-				v = mInflater.inflate(R.layout.element_item_small, parent, false);
-				lp = new LayoutParams(v.getLayoutParams());
-				// lp.span = 1;
-				break;
-			case 10:
-			case 20:
-				v = mInflater.inflate(R.layout.element_item_large, parent, false);
-				lp = new LayoutParams(v.getLayoutParams());
-				lp.span = 4;
-				break;
-			default:
-				v = mInflater.inflate(R.layout.element_item, parent, false);
-				lp = new LayoutParams(v.getLayoutParams());
-				lp.span = 2;
-				break;
-			}
-			v.setLayoutParams(lp);
-			return v;
-		}
 	}
 
 	class DonglixiaTask extends AsyncTask<String, Integer, List<Donglixia>> {
@@ -190,22 +124,23 @@ public class MainActivity extends Activity {
 
 		public List<Donglixia> parseNewsJSON(String url) throws IOException {
 			List<Donglixia> donglixias = new ArrayList<Donglixia>();
+			// 留出头部
+			donglixias.add(new Donglixia());
 			String json = "";
 			if (Helper.checkConnection(mContext)) {
 				try {
 					json = Helper.getStringFromUrl(url);
-					
-					String de1 = json.substring(1, 9); 
+
+					String de1 = json.substring(1, 9);
 					String de2 = json.substring(10, json.length());
-					json = de1 + de2; 
-					
+					json = de1 + de2;
+
 					Log.i("json:", json);
 					byte[] result = Base64.decode(json, Base64.DEFAULT);
 
 					json = new String(result);
 					Log.i("data:", json);
-					
-					 
+
 				} catch (IOException e) {
 					Log.e("IOException is : ", e.toString());
 					e.printStackTrace();
@@ -223,14 +158,14 @@ public class MainActivity extends Activity {
 					JSONArray dataJson = newsObject.getJSONArray("DATA");
 
 					for (int i = 0; i < dataJson.length(); i++) {
-						
+
 						JSONObject obj = dataJson.getJSONObject(i);
 						String urls = obj.getString("URL");
 						String tag = obj.getString("TAG");
-						
+
 						Donglixia donglixia = new Donglixia();
 						donglixia.setUrl(urls);
-						donglixia.setTag(tag);
+						donglixia.setTag(tag == null ? "" : tag);
 						donglixias.add(donglixia);
 					}
 				}
