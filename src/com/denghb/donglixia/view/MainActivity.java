@@ -59,7 +59,17 @@ public class MainActivity extends Activity {
 		public void onScroll(ViewGroup view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 			Log.d(TAG, "[onScroll] firstVisibleItem:" + firstVisibleItem + " visibleItemCount:" + visibleItemCount
 					+ " totalItemCount:" + totalItemCount);
+			// 下拉刷新
+			if (0 == firstVisibleItem) {
+				DonglixiaTask task = new DonglixiaTask(MainActivity.this);
+				task.execute("http://donglixia.sinaapp.com/app/service/?p=1");
+			}
 
+			// 上拉加载
+			if (firstVisibleItem + visibleItemCount == totalItemCount) {
+				DonglixiaTask task = new DonglixiaTask(MainActivity.this);
+				task.execute("http://donglixia.sinaapp.com/app/service/?p=2");
+			}
 		}
 	};
 	private final List<Donglixia> list = new ArrayList<Donglixia>();

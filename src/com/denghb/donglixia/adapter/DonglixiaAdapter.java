@@ -58,36 +58,42 @@ public class DonglixiaAdapter extends BaseAdapter {
 		Log.i("position :", position + "");
 		// 东篱下属性
 		final Donglixia donglixia = list.get(position);
+		LayoutParams lp = null;
 		ViewHolder viewholder = null;
 		// 头部
 		if (0 == position) {
-			View v = mLayoutInflater.inflate(R.layout.header, parent, false);
-			LayoutParams lp = new LayoutParams(v.getLayoutParams());
+			convertView = mLayoutInflater.inflate(R.layout.header, parent, false);
+			lp = new LayoutParams(convertView.getLayoutParams());
 			lp.span = 2;
-			v.setLayoutParams(lp);
-			return v;
-		}
 
-		if (null == convertView) {
+			// convertView.setTag(convertView);
+
+		} else {
+
+			// if (null == convertView) {
 			convertView = mLayoutInflater.inflate(R.layout.item, parent, false);
 
 			viewholder = new ViewHolder();
 			viewholder.imageView = (ImageView) convertView.findViewById(R.id.donglixia_image);
 			viewholder.tagView = (TextView) convertView.findViewById(R.id.donglixia_tag);
 
-			convertView.setTag(viewholder);
-		} else {
-			viewholder = (ViewHolder) convertView.getTag();
-		}
+			// convertView.setTag(viewholder);
+			// } else {
+			// viewholder = (ViewHolder) convertView.getTag();
+			// }
 
-		if (null != viewholder) {
+			// if (null != viewholder) {
+
 			viewholder.tagView.setText(donglixia.getTag());
 			// 处理图片
 			mImageFetcher.loadImage(donglixia.getUrl(), viewholder.imageView);
-			LayoutParams lp = new LayoutParams(convertView.getLayoutParams());
+			// }
+
+			lp = new LayoutParams(convertView.getLayoutParams());
 			lp.span = 1;
-			convertView.setLayoutParams(lp);
 		}
+		convertView.setLayoutParams(lp);
+
 		return convertView;
 	}
 
