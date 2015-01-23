@@ -3,13 +3,13 @@
     android:id="@+id/news_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/news_item_bg"
+    android:background="#FFFFFF"
     android:orientation="vertical" >
 
-    <ImageView
+    <com.denghb.donglixia.widget.DynamicHeightImageView
         android:id="@+id/donglixia_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:contentDescription="@string/app_name"
         android:src="@null" />
