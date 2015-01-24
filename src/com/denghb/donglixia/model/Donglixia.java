@@ -7,9 +7,17 @@ package com.denghb.donglixia.model;
  */
 public class Donglixia {
 	
+	/** ID */
+	private Integer id;
+	
+	/** 地址 */
 	private String url;
 	
+	/** 标签 */
 	private String tag;
+	
+	/** 喜欢 */
+	private Integer love;
 
 	public String getUrl() {
 		return url;
@@ -25,6 +33,22 @@ public class Donglixia {
 
 	public void setTag(String tag) {
 		this.tag = tag;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getLove() {
+		return love;
+	}
+
+	public void setLove(Integer love) {
+		this.love = love;
 	}
 	
 }

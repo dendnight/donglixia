@@ -85,55 +85,29 @@ containing a value of this type.
         public static final int item_margin=0x7f010003;
     }
     public static final class color {
-        public static final int black=0x7f040000;
-    }
-    public static final class dimen {
-        /**  The standard size (both width and height) of an application icon that
-         will be displayed in the app launcher and elsewhere. 
-         */
-        public static final int app_icon_size=0x7f050003;
-        /**  Size of the fastscroll hint letter 
-         */
-        public static final int fastscroll_overlay_size=0x7f050006;
-        /**  Height of the fastscroll thumb 
-         */
-        public static final int fastscroll_thumb_height=0x7f050008;
-        /**  Width of the fastscroll thumb 
-         */
-        public static final int fastscroll_thumb_width=0x7f050007;
-        public static final int margin=0x7f050000;
-        /**  Height of the status bar 
-         */
-        public static final int status_bar_height=0x7f050005;
-        /**  The height that is used when creating thumbnails of applications. 
-         */
-        public static final int thumbnail_height=0x7f050002;
-        /**  The width that is used when creating thumbnails of applications. 
-         */
-        public static final int thumbnail_width=0x7f050001;
-        public static final int toast_y_offset=0x7f050004;
+        public static final int blue=0x7f040003;
+        public static final int green=0x7f040002;
+        public static final int grey=0x7f040001;
+        public static final int list_item_pressed=0x7f040006;
+        public static final int orange=0x7f040000;
+        public static final int red=0x7f040005;
+        public static final int yellow=0x7f040004;
     }
     public static final class drawable {
-        public static final int bg_white_box=0x7f020000;
-        public static final int empty_photo=0x7f020001;
-        public static final int ic_empty=0x7f020002;
-        public static final int ic_error=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
-        public static final int ic_stub=0x7f020005;
-        public static final int news_item_bg=0x7f020006;
+        public static final int empty=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int donglixia_image=0x7f0a0004;
-        public static final int donglixia_love=0x7f0a0006;
-        public static final int donglixia_tag=0x7f0a0005;
-        public static final int editText1=0x7f0a0001;
-        public static final int grid_view=0x7f0a0000;
-        public static final int menu_settings=0x7f0a0007;
-        public static final int news_list=0x7f0a0003;
-        public static final int search=0x7f0a0002;
+        public static final int donglixia_image=0x7f080004;
+        public static final int donglixia_tag=0x7f080005;
+        public static final int editText1=0x7f080001;
+        public static final int grid_view=0x7f080000;
+        public static final int menu_settings=0x7f080006;
+        public static final int news_list=0x7f080003;
+        public static final int search=0x7f080002;
     }
     public static final class integer {
-        public static final int grid_column_count=0x7f060000;
+        public static final int grid_column_count=0x7f050000;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -141,35 +115,11 @@ containing a value of this type.
         public static final int item=0x7f030002;
     }
     public static final class menu {
-        public static final int menu_main=0x7f090000;
+        public static final int menu_main=0x7f070000;
     }
     public static final class string {
-        public static final int app_name=0x7f070000;
-        public static final int hello_world=0x7f070001;
-        public static final int menu_settings=0x7f070002;
-        public static final int xlistview_footer_hint_normal=0x7f070007;
-        public static final int xlistview_footer_hint_ready=0x7f070008;
-        public static final int xlistview_header_hint_loading=0x7f070005;
-        public static final int xlistview_header_hint_normal=0x7f070003;
-        public static final int xlistview_header_hint_ready=0x7f070004;
-        public static final int xlistview_header_last_time=0x7f070006;
-    }
-    public static final class style {
-        /** 
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    
-
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        
-         */
-        public static final int AppBaseTheme=0x7f080000;
-        /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
-         */
-        public static final int AppTheme=0x7f080001;
+        public static final int app_name=0x7f060000;
+        public static final int menu_settings=0x7f060001;
     }
     public static final class styleable {
         /** Attributes that can be used with a StaggeredGridView.

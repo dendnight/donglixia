@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -42,11 +43,20 @@ public class Helper {
 	 * @throws IOException
 	 * @throws ClientProtocolException
 	 */
-	public static String getStringFromUrl(String url) throws ClientProtocolException, IOException {
-		HttpGet get = new HttpGet(url);
-		HttpClient client = new DefaultHttpClient();
-		HttpResponse response = client.execute(get);
-		HttpEntity entity = response.getEntity();
-		return EntityUtils.toString(entity, "UTF-8");
+	public static String getStringFromUrl(String url){
+		try {
+			HttpGet get = new HttpGet(url);
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response = client.execute(get);
+			HttpEntity entity = response.getEntity();
+			return EntityUtils.toString(entity, "UTF-8");
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

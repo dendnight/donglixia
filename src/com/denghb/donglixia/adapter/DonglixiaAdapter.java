@@ -1,5 +1,6 @@
 package com.denghb.donglixia.adapter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,6 +44,7 @@ public class DonglixiaAdapter extends BaseAdapter {
 
 	private final Random mRandom;
     private static final SparseArray<Double> sPositionHeightRatios = new SparseArray<Double>();
+    private final ArrayList<Integer> mBackgroundColors;
 
 	public DonglixiaAdapter(Context context, List<Donglixia> list) {
 		super();
@@ -51,11 +53,19 @@ public class DonglixiaAdapter extends BaseAdapter {
 		this.list = list;
 
 		mRandom = new Random();
+        mBackgroundColors = new ArrayList<Integer>();
+        mBackgroundColors.add(R.color.orange);
+        mBackgroundColors.add(R.color.green);
+        mBackgroundColors.add(R.color.blue);
+        mBackgroundColors.add(R.color.yellow);
+        mBackgroundColors.add(R.color.grey);
 		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_empty)
-				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true)
+				.showImageOnLoading(R.drawable.empty)
+				.showImageForEmptyUri(R.drawable.empty)
+				.showImageOnFail(R.drawable.empty)
+				.cacheInMemory(true)
+				.cacheOnDisk(true)
+				.considerExifParams(true)
 				.bitmapConfig(Bitmap.Config.RGB_565).build();
 	}
 
@@ -96,6 +106,11 @@ public class DonglixiaAdapter extends BaseAdapter {
 			viewholder = (ViewHolder) convertView.getTag();
 		}
 
+		// 随机背景色
+        int backgroundIndex = position >= mBackgroundColors.size() ?
+                position % mBackgroundColors.size() : position;
+
+        convertView.setBackgroundResource(mBackgroundColors.get(backgroundIndex));
 		// if (null != viewholder) {
 
 		viewholder.tagView.setText(donglixia.getTag());

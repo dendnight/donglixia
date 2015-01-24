@@ -18,15 +18,16 @@
         android:id="@+id/donglixia_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="1dp"
         android:singleLine="false"
-        android:textColor="#656565" />
-
+        android:textColor="#111111" />
+<!-- 
     <TextView
         android:id="@+id/donglixia_love"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|bottom"
         android:gravity="right"
-        android:textColor="#9f9f9f" />
+        android:textColor="#9f9f9f" /> -->
 
 </LinearLayout>

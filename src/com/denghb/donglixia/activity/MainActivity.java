@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.denghb.donglixia.R;
-import com.denghb.donglixia.activity.MainActivity.DonglixiaTask;
 import com.denghb.donglixia.adapter.DonglixiaAdapter;
 import com.denghb.donglixia.model.Donglixia;
 import com.denghb.donglixia.tools.Helper;
@@ -18,6 +17,7 @@ import com.denghb.donglixia.widget.StaggeredGridView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
@@ -28,120 +28,141 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+public class MainActivity extends Activity implements
+		AbsListView.OnScrollListener, AbsListView.OnItemClickListener,
+		AdapterView.OnItemLongClickListener {
 
-public class MainActivity extends Activity implements AbsListView.OnScrollListener, AbsListView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+	private static final String TAG = "StaggeredGridActivity";
+	public static final String SAVED_DATA_KEY = "SAVED_DATA";
 
-    private static final String TAG = "StaggeredGridActivity";
-    public static final String SAVED_DATA_KEY = "SAVED_DATA";
-
-    private StaggeredGridView mGridView;
-    private boolean mHasRequestedMore;
-    private DonglixiaAdapter mAdapter;
+	private StaggeredGridView mGridView;
+	private boolean mHasRequestedMore;
+	private DonglixiaAdapter mAdapter;
 
 	private final List<Donglixia> list = new ArrayList<Donglixia>();
 
-    @SuppressLint("NewApi")
+	private int page = 1;
+
+	@SuppressLint("NewApi")
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 
-        mGridView = (StaggeredGridView) findViewById(R.id.grid_view);
+		mGridView = (StaggeredGridView) findViewById(R.id.grid_view);
 
-        LayoutInflater layoutInflater = getLayoutInflater();
-        
-        // 头部
-        View header = layoutInflater.inflate(R.layout.header, null);
+		LayoutInflater layoutInflater = getLayoutInflater();
 
-        mGridView.addHeaderView(header);
-        
-        
+		// 头部
+		View header = layoutInflater.inflate(R.layout.header, null);
+
+		mGridView.addHeaderView(header);
+
 		// list 可以缓存
 		mAdapter = new DonglixiaAdapter(this, list);
 
+		mGridView.setAdapter(mAdapter);
+		mGridView.setOnScrollListener(this);
+		mGridView.setOnItemClickListener(this);
+		mGridView.setOnItemLongClickListener(this);
 
-        mGridView.setAdapter(mAdapter);
-        mGridView.setOnScrollListener(this);
-        mGridView.setOnItemClickListener(this);
-        mGridView.setOnItemLongClickListener(this);
-        
-        String url = "http://donglixia.sinaapp.com/app/service/";
+		String url = "http://donglixia.sinaapp.com/app/service/?p=" + page;
 		Log.d("MainActivity", "current url:" + url);
 		DonglixiaTask task = new DonglixiaTask(this);
 		task.execute(url);
-        
-    }
 
-    @Override
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-//		getMenuInflater().inflate(R.menu.menu_sgv_dynamic, menu);
+		// getMenuInflater().inflate(R.menu.menu_sgv_dynamic, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//			case R.id.col1:
-//				mGridView.setColumnCount(1);
-//				break;
-//			case R.id.col2:
-//				mGridView.setColumnCount(2);
-//				break;
-//			case R.id.col3:
-//				mGridView.setColumnCount(3);
-//				break;
-//		}
+		// switch (item.getItemId()) {
+		// case R.id.col1:
+		// mGridView.setColumnCount(1);
+		// break;
+		// case R.id.col2:
+		// mGridView.setColumnCount(2);
+		// break;
+		// case R.id.col3:
+		// mGridView.setColumnCount(3);
+		// break;
+		// }
 		return true;
 	}
-	
 
-    @Override
-    public void onScrollStateChanged(final AbsListView view, final int scrollState) {
-        Log.d(TAG, "onScrollStateChanged:" + scrollState);
-    }
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			Log.i("info", "landscape");
+//			mGridView.setColumnCount(3);
+		} else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			Log.i("info", "portrait");
+//			mGridView.setColumnCount(2);
+		}
+	}
 
-    @Override
-    public void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
-        Log.d(TAG, "onScroll firstVisibleItem:" + firstVisibleItem +
-                            " visibleItemCount:" + visibleItemCount +
-                            " totalItemCount:" + totalItemCount);
-        // our handling
-        if (!mHasRequestedMore) {
-            int lastInScreen = firstVisibleItem + visibleItemCount;
-            if (lastInScreen >= totalItemCount) {
-                Log.d(TAG, "onScroll lastInScreen - so load more");
-                mHasRequestedMore = true;
-                onLoadMoreItems();
-            }
-        }
-    }
+	@Override
+	public void onScrollStateChanged(final AbsListView view,
+			final int scrollState) {
+		Log.d(TAG, "onScrollStateChanged:" + scrollState);
+	}
 
-    // 加载更多
-    private void onLoadMoreItems() {
-        
-        // stash all the data in our backing store
-//        mData.addAll(sampleData);
-        // notify the adapter that we can update now
-//        mAdapter.notifyDataSetChanged();
-        mHasRequestedMore = false;
-    }
+	@Override
+	public void onScroll(final AbsListView view, final int firstVisibleItem,
+			final int visibleItemCount, final int totalItemCount) {
+		Log.d(TAG, "onScroll firstVisibleItem:" + firstVisibleItem
+				+ " visibleItemCount:" + visibleItemCount + " totalItemCount:"
+				+ totalItemCount);
+		// our handling
+		if (!mHasRequestedMore && 1 < totalItemCount) {
+			int lastInScreen = firstVisibleItem + visibleItemCount;
+			if (lastInScreen >= totalItemCount) {
+				Log.d(TAG, "onScroll lastInScreen - so load more");
+				mHasRequestedMore = true;
+				onLoadMoreItems();
+			}
+		}
+	}
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Toast.makeText(this, "Item Clicked: " + position, Toast.LENGTH_SHORT).show();
-    }
+	// 加载更多
+	private void onLoadMoreItems() {
 
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
-    {
-        Toast.makeText(this, "Item Long Clicked: " + position, Toast.LENGTH_SHORT).show();
-        return true;
-    }
-    
-    class DonglixiaTask extends AsyncTask<String, Integer, List<Donglixia>> {
+		page++;
+		// stash all the data in our backing store
+		String url = "http://donglixia.sinaapp.com/app/service/?p=" + page;
+		Log.d("MainActivity", "current url:" + url);
+		DonglixiaTask task = new DonglixiaTask(this);
+		task.execute(url);
+		// notify the adapter that we can update now
+		mAdapter.notifyDataSetChanged();
+		mHasRequestedMore = false;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> adapterView, View view,
+			int position, long id) {
+		Toast.makeText(this, "Item Clicked: " + position, Toast.LENGTH_SHORT)
+				.show();
+		Log.i(TAG, "ID:"+list.get(position).getId());
+	}
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view,
+			int position, long id) {
+		Toast.makeText(this, "Item Long Clicked: " + position,
+				Toast.LENGTH_SHORT).show();
+		return true;
+	}
+
+	class DonglixiaTask extends AsyncTask<String, Integer, List<Donglixia>> {
 
 		private final Context mContext;
 
@@ -176,26 +197,19 @@ public class MainActivity extends Activity implements AbsListView.OnScrollListen
 			// 留出头部
 			String json = "";
 			if (Helper.checkConnection(mContext)) {
-				try {
-					json = Helper.getStringFromUrl(url);
+				json = Helper.getStringFromUrl(url);
 
-					String de1 = json.substring(1, 9);
-					String de2 = json.substring(10, json.length());
-					json = de1 + de2;
+				String de1 = json.substring(1, 9);
+				String de2 = json.substring(10, json.length());
+				json = de1 + de2;
 
-					Log.i("json:", json);
-					byte[] result = Base64.decode(json, Base64.DEFAULT);
+				Log.i("json:", json);
+				byte[] result = Base64.decode(json, Base64.DEFAULT);
 
-					json = new String(result);
-					Log.i("data:", json);
+				json = new String(result);
+				Log.i("data:", json);
 
-				} catch (IOException e) {
-					Log.e("IOException is : ", e.toString());
-					e.printStackTrace();
-					return donglixias;
-				} catch (Exception e) {
-
-				}
+				// return donglixias;
 			}
 			Log.d("MainActiivty", "json:" + json);
 
@@ -210,8 +224,12 @@ public class MainActivity extends Activity implements AbsListView.OnScrollListen
 						JSONObject obj = dataJson.getJSONObject(i);
 						String urls = obj.getString("URL");
 						String tag = obj.getString("TAG");
+						int id = obj.getInt("ID");
+						int love = obj.getInt("LOVE");
 
 						Donglixia donglixia = new Donglixia();
+						donglixia.setId(id);
+						donglixia.setLove(love);
 						donglixia.setUrl(urls);
 						donglixia.setTag(tag == null ? "" : tag);
 						donglixias.add(donglixia);
