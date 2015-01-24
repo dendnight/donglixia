@@ -1,40 +1,33 @@
 package com.denghb.donglixia.activity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.denghb.donglixia.Constants;
 import com.denghb.donglixia.R;
 import com.denghb.donglixia.adapter.DonglixiaAdapter;
 import com.denghb.donglixia.model.Donglixia;
-import com.denghb.donglixia.tools.Helper;
+import com.denghb.donglixia.obtain.MainObtain;
 import com.denghb.donglixia.widget.StaggeredGridView;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
-import android.content.res.Configuration;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Base64;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+@SuppressLint("HandlerLeak")
 public class MainActivity extends Activity implements
-		AbsListView.OnScrollListener, AbsListView.OnItemClickListener,
-		AdapterView.OnItemLongClickListener {
+		AbsListView.OnScrollListener, AbsListView.OnItemClickListener {
 
-	private static final String TAG = "StaggeredGridActivity";
+	private static final String TAG = MainActivity.class.getSimpleName();
 	public static final String SAVED_DATA_KEY = "SAVED_DATA";
 
 	private StaggeredGridView mGridView;
@@ -51,6 +44,8 @@ public class MainActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		request();
+
 		mGridView = (StaggeredGridView) findViewById(R.id.grid_view);
 
 		LayoutInflater layoutInflater = getLayoutInflater();
@@ -66,48 +61,37 @@ public class MainActivity extends Activity implements
 		mGridView.setAdapter(mAdapter);
 		mGridView.setOnScrollListener(this);
 		mGridView.setOnItemClickListener(this);
-		mGridView.setOnItemLongClickListener(this);
+	}
 
+	/**
+	 * 请求服务器
+	 */
+	private void request() {
 		String url = "http://donglixia.sinaapp.com/app/service/?p=" + page;
-		Log.d("MainActivity", "current url:" + url);
-		DonglixiaTask task = new DonglixiaTask(this);
-		task.execute(url);
+		// 页数+1
+		page++;
+		// 请求url
+		MainObtain mainObtain = new MainObtain(this, handler, url);
+		mainObtain.start();
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// getMenuInflater().inflate(R.menu.menu_sgv_dynamic, menu);
-		return true;
-	}
+	/**
+	 * 更新UI
+	 */
+	private final Handler handler = new Handler() {
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// switch (item.getItemId()) {
-		// case R.id.col1:
-		// mGridView.setColumnCount(1);
-		// break;
-		// case R.id.col2:
-		// mGridView.setColumnCount(2);
-		// break;
-		// case R.id.col3:
-		// mGridView.setColumnCount(3);
-		// break;
-		// }
-		return true;
-	}
+		@SuppressWarnings("unchecked")
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == Constants.WHAT.COMPLETED) {
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			Log.i("info", "landscape");
-//			mGridView.setColumnCount(3);
-		} else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-			Log.i("info", "portrait");
-//			mGridView.setColumnCount(2);
+				list.addAll((List<Donglixia>) msg.obj);
+				mAdapter.notifyDataSetChanged();
+				mHasRequestedMore = false;
+			}
 		}
-	}
+	};
 
 	@Override
 	public void onScrollStateChanged(final AbsListView view,
@@ -127,118 +111,21 @@ public class MainActivity extends Activity implements
 			if (lastInScreen >= totalItemCount) {
 				Log.d(TAG, "onScroll lastInScreen - so load more");
 				mHasRequestedMore = true;
-				onLoadMoreItems();
+				request();
 			}
 		}
-	}
-
-	// 加载更多
-	private void onLoadMoreItems() {
-
-		page++;
-		// stash all the data in our backing store
-		String url = "http://donglixia.sinaapp.com/app/service/?p=" + page;
-		Log.d("MainActivity", "current url:" + url);
-		DonglixiaTask task = new DonglixiaTask(this);
-		task.execute(url);
-		// notify the adapter that we can update now
-		mAdapter.notifyDataSetChanged();
-		mHasRequestedMore = false;
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view,
 			int position, long id) {
-		Toast.makeText(this, "Item Clicked: " + position, Toast.LENGTH_SHORT)
-				.show();
-		Log.i(TAG, "ID:"+list.get(position).getId());
+
+		int did = list.get(position - 1).getId();
+		Log.i(TAG, "ID:" + did);
+
+		Intent intent = new Intent(this, InfoActivity.class);
+		intent.putExtra(Constants.Extra.ID, did);
+		startActivity(intent);
 	}
 
-	@Override
-	public boolean onItemLongClick(AdapterView<?> parent, View view,
-			int position, long id) {
-		Toast.makeText(this, "Item Long Clicked: " + position,
-				Toast.LENGTH_SHORT).show();
-		return true;
-	}
-
-	class DonglixiaTask extends AsyncTask<String, Integer, List<Donglixia>> {
-
-		private final Context mContext;
-
-		public DonglixiaTask(Context context) {
-			super();
-			mContext = context;
-		}
-
-		@Override
-		protected List<Donglixia> doInBackground(String... params) {
-			try {
-				return parseNewsJSON(params[0]);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(List<Donglixia> result) {
-			list.addAll(result);
-			mAdapter.notifyDataSetChanged();
-
-		}
-
-		@Override
-		protected void onPreExecute() {
-		}
-
-		public List<Donglixia> parseNewsJSON(String url) throws IOException {
-			List<Donglixia> donglixias = new ArrayList<Donglixia>();
-			// 留出头部
-			String json = "";
-			if (Helper.checkConnection(mContext)) {
-				json = Helper.getStringFromUrl(url);
-
-				String de1 = json.substring(1, 9);
-				String de2 = json.substring(10, json.length());
-				json = de1 + de2;
-
-				Log.i("json:", json);
-				byte[] result = Base64.decode(json, Base64.DEFAULT);
-
-				json = new String(result);
-				Log.i("data:", json);
-
-				// return donglixias;
-			}
-			Log.d("MainActiivty", "json:" + json);
-
-			try {
-				if (null != json) {
-					JSONObject newsObject = new JSONObject(json);
-					// JSONObject jsonObject = newsObject.getJSONObject("data");
-					JSONArray dataJson = newsObject.getJSONArray("DATA");
-
-					for (int i = 0; i < dataJson.length(); i++) {
-
-						JSONObject obj = dataJson.getJSONObject(i);
-						String urls = obj.getString("URL");
-						String tag = obj.getString("TAG");
-						int id = obj.getInt("ID");
-						int love = obj.getInt("LOVE");
-
-						Donglixia donglixia = new Donglixia();
-						donglixia.setId(id);
-						donglixia.setLove(love);
-						donglixia.setUrl(urls);
-						donglixia.setTag(tag == null ? "" : tag);
-						donglixias.add(donglixia);
-					}
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			return donglixias;
-		}
-	}
 }

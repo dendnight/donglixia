@@ -113,7 +113,15 @@ public class DonglixiaAdapter extends BaseAdapter {
         convertView.setBackgroundResource(mBackgroundColors.get(backgroundIndex));
 		// if (null != viewholder) {
 
-		viewholder.tagView.setText(donglixia.getTag());
+        String tag = donglixia.getTag();
+        if(null != tag)
+        {
+        	viewholder.tagView.setVisibility(View.VISIBLE);
+        	viewholder.tagView.setText(tag);
+        }else{
+        	viewholder.tagView.setVisibility(View.GONE);
+        }
+        	
 		// 处理图片
 		ImageLoader.getInstance().displayImage(donglixia.getUrl(),
 				viewholder.imageView, options, animateFirstListener);
