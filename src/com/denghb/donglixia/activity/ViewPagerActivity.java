@@ -15,13 +15,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-public class ViewPagerActivity extends Activity {
+public class ViewPagerActivity extends Activity implements View.OnClickListener {
 
 	/**
 	 * Step 1: Download and set up v4 support library:
@@ -40,10 +41,29 @@ public class ViewPagerActivity extends Activity {
 		ExtendedViewPager mViewPager = (ExtendedViewPager) findViewById(R.id.view_pager);
 
 		String[] urls = getIntent().getStringArrayExtra(Constants.Extra.URLS);
-		int position = getIntent().getIntExtra(Constants.Extra.IMAGE_POSITION, 0);
+		int position = getIntent().getIntExtra(Constants.Extra.IMAGE_POSITION,
+				0);
 		mViewPager.setAdapter(new TouchImageAdapter(this, urls));
 		mViewPager.setCurrentItem(position);
+		mViewPager.setOnClickListener(this);
+	}
 
+	// 处理后退键的情况
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			finishActivity();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	// finish当前activity
+	private void finishActivity()
+	{
+		this.finish(); 
+		overridePendingTransition(0,0);
+		//overridePendingTransition(R.anim.hyperspace_in, R.anim.hyperspace_out);
 	}
 
 	static class TouchImageAdapter extends PagerAdapter {
@@ -70,8 +90,9 @@ public class ViewPagerActivity extends Activity {
 			assert view != null;
 			holder.imageView = (TouchImageView) view.findViewById(R.id.image);
 			holder.progressBar = (ProgressBar) view.findViewById(R.id.progress);
-			
-            container.addView(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+			container.addView(view, LinearLayout.LayoutParams.MATCH_PARENT,
+					LinearLayout.LayoutParams.MATCH_PARENT);
 
 			ImageLoader.getInstance().displayImage(urls[position],
 					holder.imageView, Helper.displayImageOptions(),
@@ -121,5 +142,11 @@ public class ViewPagerActivity extends Activity {
 			TouchImageView imageView;
 			ProgressBar progressBar;
 		}
+	}
+
+
+	@Override
+	public void onClick(View v) {
+		finishActivity();
 	}
 }

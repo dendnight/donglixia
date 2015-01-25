@@ -8,6 +8,13 @@
 package com.denghb.donglixia;
 
 public final class R {
+    public static final class anim {
+        public static final int dialog_loading=0x7f040000;
+        public static final int hyperspace_in=0x7f040001;
+        public static final int hyperspace_out=0x7f040002;
+        public static final int zoom_enter=0x7f040003;
+        public static final int zoom_exit=0x7f040004;
+    }
     public static final class attr {
         /** <p>Must be an integer value, such as "<code>100</code>".
 <p>This may also be a reference to a resource (in the form
@@ -85,51 +92,61 @@ containing a value of this type.
         public static final int item_margin=0x7f010003;
     }
     public static final class color {
-        public static final int blue=0x7f040003;
-        public static final int green=0x7f040002;
-        public static final int grey=0x7f040001;
-        public static final int list_item_pressed=0x7f040006;
-        public static final int orange=0x7f040000;
-        public static final int red=0x7f040005;
-        public static final int yellow=0x7f040004;
+        public static final int blue=0x7f050003;
+        public static final int green=0x7f050002;
+        public static final int grey=0x7f050001;
+        public static final int grey2=0x7f050006;
+        public static final int orange=0x7f050000;
+        public static final int red=0x7f050005;
+        public static final int yellow=0x7f050004;
     }
     public static final class drawable {
-        public static final int empty=0x7f020000;
-        public static final int icon=0x7f020001;
-        public static final int shadow=0x7f020002;
+        public static final int btn_bg=0x7f020000;
+        public static final int empty=0x7f020001;
+        public static final int icon=0x7f020002;
+        public static final int loading=0x7f020003;
+        public static final int transparent=0x7f020004;
+        public static final int txt_bg=0x7f020005;
     }
     public static final class id {
-        public static final int donglixia_image=0x7f090005;
-        public static final int donglixia_tag=0x7f090006;
-        public static final int editText1=0x7f090002;
-        public static final int grid_view=0x7f090000;
-        public static final int image=0x7f090007;
-        public static final int menu_settings=0x7f090009;
-        public static final int news_list=0x7f090004;
-        public static final int progress=0x7f090008;
-        public static final int search=0x7f090003;
-        public static final int view_pager=0x7f090001;
+        public static final int dialog_loading_img=0x7f0a0003;
+        public static final int dialog_loading_txt=0x7f0a0004;
+        public static final int dialog_view=0x7f0a0002;
+        public static final int donglixia_image=0x7f0a0008;
+        public static final int donglixia_tag=0x7f0a0009;
+        public static final int grid_view=0x7f0a0000;
+        public static final int image=0x7f0a000a;
+        public static final int menu_settings=0x7f0a000c;
+        public static final int news_list=0x7f0a0007;
+        public static final int progress=0x7f0a000b;
+        public static final int search_btn=0x7f0a0006;
+        public static final int search_txt=0x7f0a0005;
+        public static final int view_pager=0x7f0a0001;
     }
     public static final class integer {
-        public static final int grid_column_count=0x7f050000;
+        public static final int grid_column_count=0x7f060000;
     }
     public static final class layout {
         public static final int activity_info=0x7f030000;
         public static final int activity_main=0x7f030001;
         public static final int activity_viewpager=0x7f030002;
-        public static final int header=0x7f030003;
-        public static final int item=0x7f030004;
-        public static final int item_viewpager=0x7f030005;
+        public static final int dialog_loading=0x7f030003;
+        public static final int header=0x7f030004;
+        public static final int item=0x7f030005;
+        public static final int item_viewpager=0x7f030006;
     }
     public static final class menu {
-        public static final int menu_main=0x7f080000;
+        public static final int menu_main=0x7f090000;
     }
     public static final class string {
-        public static final int app_name=0x7f060000;
-        public static final int menu_settings=0x7f060001;
+        public static final int app_name=0x7f070000;
+        public static final int menu_settings=0x7f070001;
     }
     public static final class style {
-        public static final int ProgressBarStyle=0x7f070000;
+        public static final int ProgressBarStyle=0x7f080000;
+        /**  loading 
+         */
+        public static final int dialog_loading=0x7f080001;
     }
     public static final class styleable {
         /** Attributes that can be used with a StaggeredGridView.

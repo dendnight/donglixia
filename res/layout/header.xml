@@ -12,30 +12,46 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
             android:text="采菊东篱下，悠然见南山。"
             android:textColor="#fff"
-            android:textSize="12pt" />
+            android:textSize="11pt" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:paddingTop="10dp" >
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/search_txt"
+            style="@drawable/txt_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10" />
+            android:background="#efefef"
+            android:ems="15"
+            android:singleLine="true"
+            android:hint="标签"
+            android:textSize="7pt"
+            android:padding="8dp" />
 
         <Button
-            android:id="@+id/search"
+            android:id="@+id/search_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="搜索" />
-    </LinearLayout>
+            android:layout_alignRight="@+id/search_txt"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/btn_bg"
+            android:padding="6dp"
+            android:text="  搜索  " />
+
+    </RelativeLayout>
 
 </LinearLayout>
