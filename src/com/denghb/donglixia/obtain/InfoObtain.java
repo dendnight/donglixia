@@ -48,7 +48,6 @@ public class InfoObtain extends Thread {
 		String json = httpRetriever.decodeToJsonString(response);
 
 		// 获取
-
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 			JSONArray dataArray = jsonObject.getJSONArray("DATA");

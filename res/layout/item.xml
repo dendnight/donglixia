@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/news_list"
+    style="@drawable/shadow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
@@ -10,8 +11,8 @@
         android:id="@+id/donglixia_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
         android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
         android:src="@null" />
 
     <TextView
@@ -21,13 +22,14 @@
         android:padding="1dp"
         android:singleLine="false"
         android:textColor="#111111" />
-<!-- 
+    <!--
     <TextView
         android:id="@+id/donglixia_love"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|bottom"
         android:gravity="right"
-        android:textColor="#9f9f9f" /> -->
+        android:textColor="#9f9f9f" />
+    -->
 
 </LinearLayout>

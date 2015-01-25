@@ -11,7 +11,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import com.denghb.donglixia.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -35,6 +39,18 @@ public class Helper {
 		return false;
 	}
 
+	public static DisplayImageOptions displayImageOptions() {
+		return  new DisplayImageOptions.Builder()
+		.showImageOnLoading(R.drawable.empty)
+		.showImageForEmptyUri(R.drawable.empty)
+		.showImageOnFail(R.drawable.empty)
+		.cacheInMemory(true)
+		.cacheOnDisk(true)
+		.considerExifParams(true)
+		.bitmapConfig(Bitmap.Config.RGB_565)
+		.build();
+	}
+	
 	/**
 	 * 从网上获取内容get方式
 	 * 

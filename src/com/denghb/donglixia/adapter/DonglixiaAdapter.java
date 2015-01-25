@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.denghb.donglixia.R;
 import com.denghb.donglixia.model.Donglixia;
+import com.denghb.donglixia.tools.Helper;
 import com.denghb.donglixia.widget.DynamicHeightImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -39,7 +40,6 @@ public class DonglixiaAdapter extends BaseAdapter {
 	private final LayoutInflater mLayoutInflater;
 
 	private final List<Donglixia> list;
-	DisplayImageOptions options;
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
 	private final Random mRandom;
@@ -59,14 +59,6 @@ public class DonglixiaAdapter extends BaseAdapter {
         mBackgroundColors.add(R.color.blue);
         mBackgroundColors.add(R.color.yellow);
         mBackgroundColors.add(R.color.grey);
-		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.empty)
-				.showImageForEmptyUri(R.drawable.empty)
-				.showImageOnFail(R.drawable.empty)
-				.cacheInMemory(true)
-				.cacheOnDisk(true)
-				.considerExifParams(true)
-				.bitmapConfig(Bitmap.Config.RGB_565).build();
 	}
 
 	@Override
@@ -124,7 +116,7 @@ public class DonglixiaAdapter extends BaseAdapter {
         	
 		// 处理图片
 		ImageLoader.getInstance().displayImage(donglixia.getUrl(),
-				viewholder.imageView, options, animateFirstListener);
+				viewholder.imageView, Helper.displayImageOptions(), animateFirstListener);
 
 		double positionHeight = getPositionRatio(position);
 		viewholder.imageView.setHeightRatio(positionHeight);

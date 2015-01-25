@@ -19,6 +19,7 @@ import com.denghb.donglixia.widget.StaggeredGridView;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -41,6 +42,8 @@ public class InfoActivity extends Activity implements
 
 	private final List<Donglixia> list = new ArrayList<Donglixia>();
 
+	private String[] urls;
+	
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,18 +91,41 @@ public class InfoActivity extends Activity implements
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == Constants.WHAT.COMPLETED) {
+				List<Donglixia> myList = (List<Donglixia>)msg.obj;
 				
-				list.addAll((List<Donglixia>)msg.obj);
+				// 跳转至大图
+				urls = new String[myList.size()];
+				
+				for (int i = 0; i < urls.length; i++) {
+					urls[i] = myList.get(i).getUrl();
+				}
+				
+				startViewPagerActivity(0);
+				
+				list.addAll(myList);
 				mAdapter.notifyDataSetChanged();
 			}
 		}
 	};
+	
+	/**
+	 *  跳转到
+	 * @param position
+	 */
+	private void startViewPagerActivity(int position)
+	{
+
+		Intent intent = new Intent(InfoActivity.this, ViewPagerActivity.class);
+		intent.putExtra(Constants.Extra.URLS, urls);
+		intent.putExtra(Constants.Extra.IMAGE_POSITION, position-1);
+		startActivity(intent);
+		
+	}
+	
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view,
 			int position, long id) {
-		Toast.makeText(this, "Item Clicked: " + position, Toast.LENGTH_SHORT)
-				.show();
-
+		startViewPagerActivity(position);
 	}
 
 }
