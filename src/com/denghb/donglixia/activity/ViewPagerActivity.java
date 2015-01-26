@@ -63,7 +63,6 @@ public class ViewPagerActivity extends Activity implements View.OnClickListener 
 	{
 		this.finish(); 
 		overridePendingTransition(0,0);
-		//overridePendingTransition(R.anim.hyperspace_in, R.anim.hyperspace_out);
 	}
 
 	static class TouchImageAdapter extends PagerAdapter {

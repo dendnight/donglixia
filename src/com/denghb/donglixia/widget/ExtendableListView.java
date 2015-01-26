@@ -17,6 +17,7 @@
 
 package com.denghb.donglixia.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Rect;
@@ -33,7 +34,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.Scroller;
-
 import java.util.ArrayList;
 
 /**
@@ -57,6 +57,7 @@ import java.util.ArrayList;
  * Be careful with this - not everything may be how you expect if you assume this to be
  * a regular old {@link android.widget.ListView}
  */
+@SuppressLint("WrongCall")
 public abstract class ExtendableListView extends AbsListView {
 
     private static final String TAG = "ExtendableListView";

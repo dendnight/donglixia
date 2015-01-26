@@ -29,7 +29,6 @@ public class InfoActivity extends Activity implements
 		AbsListView.OnItemClickListener {
 
 	private static final String TAG = InfoActivity.class.getSimpleName();
-	public static final String SAVED_DATA_KEY = "SAVED_DATA";
 
 	private StaggeredGridView mGridView;
 	private DonglixiaAdapter mAdapter;
@@ -72,7 +71,7 @@ public class InfoActivity extends Activity implements
 	private void request() {
 		// 接收传来的ID
 		int i = getIntent().getIntExtra(Constants.Extra.ID, 0);
-		String url = "http://donglixia.sinaapp.com/app/service/info/?i=" + i;
+		String url = Constants.Server.info(i);
 		// 请求url
 		InfoObtain infoObtain = new InfoObtain(this, handler, url);
 		infoObtain.start();

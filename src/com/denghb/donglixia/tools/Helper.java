@@ -1,16 +1,5 @@
 package com.denghb.donglixia.tools;
 
-import java.io.IOException;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
 import com.denghb.donglixia.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
@@ -27,8 +16,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author denghb
+ *
+ */
 public class Helper {
-	// 测网络连
+	/**
+	 * 检查网络连接
+	 * 
+	 * @param context
+	 * @return
+	 */
 	public static boolean checkConnection(Context context) {
 		ConnectivityManager connectivityManager = (ConnectivityManager) context
 				.getSystemService(context.CONNECTIVITY_SERVICE);
@@ -39,8 +38,14 @@ public class Helper {
 		return false;
 	}
 
-	public static boolean isWifi(Context mContext) {
-		ConnectivityManager connectivityManager = (ConnectivityManager) mContext
+	/**
+	 * 是否是WIFI连接
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static boolean isWifi(Context context) {
+		ConnectivityManager connectivityManager = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
 		if (activeNetInfo != null && activeNetInfo.getTypeName().equals("WIFI")) {

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import com.denghb.donglixia.Constants;
 import com.denghb.donglixia.http.HttpRetriever;
 import com.denghb.donglixia.model.Donglixia;
+import com.denghb.donglixia.tools.Helper;
 
 import android.content.Context;
 import android.os.Handler;
@@ -38,6 +39,10 @@ public class MainObtain extends Thread {
 
 	@Override
 	public void run() {
+		if(!Helper.checkConnection(context))
+		{
+			return;
+		}
 		// 请求完毕发消息
 		Message msg = new Message();
 		List<Donglixia> list = new ArrayList<Donglixia>();

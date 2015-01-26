@@ -96,6 +96,12 @@ containing a value of this type.
         public static final int green=0x7f050002;
         public static final int grey=0x7f050001;
         public static final int grey2=0x7f050006;
+        /**  material_dialog start 
+         */
+        public static final int materialdialog_card_background=0x7f050007;
+        public static final int materialdialog_card_shadow=0x7f050008;
+        public static final int materialdialog_lite_blue=0x7f050009;
+        public static final int materialdialog_window_background=0x7f05000a;
         public static final int orange=0x7f050000;
         public static final int red=0x7f050005;
         public static final int yellow=0x7f050004;
@@ -105,22 +111,34 @@ containing a value of this type.
         public static final int empty=0x7f020001;
         public static final int icon=0x7f020002;
         public static final int loading=0x7f020003;
-        public static final int transparent=0x7f020004;
-        public static final int txt_bg=0x7f020005;
+        public static final int materialdialog_button=0x7f020004;
+        public static final int materialdialog_card=0x7f020005;
+        public static final int materialdialog_card_nos=0x7f020006;
+        public static final int materialdialog_card_nos_pressed=0x7f020007;
+        public static final int materialdialog_window=0x7f020008;
+        public static final int transparent=0x7f020009;
+        public static final int txt_bg=0x7f02000a;
     }
     public static final class id {
         public static final int dialog_loading_img=0x7f0a0003;
         public static final int dialog_loading_txt=0x7f0a0004;
         public static final int dialog_view=0x7f0a0002;
-        public static final int donglixia_image=0x7f0a0008;
-        public static final int donglixia_tag=0x7f0a0009;
+        public static final int donglixia_image=0x7f0a000f;
+        public static final int donglixia_tag=0x7f0a0010;
         public static final int grid_view=0x7f0a0000;
-        public static final int image=0x7f0a000a;
-        public static final int menu_settings=0x7f0a000c;
-        public static final int news_list=0x7f0a0007;
-        public static final int progress=0x7f0a000b;
-        public static final int search_btn=0x7f0a0006;
-        public static final int search_txt=0x7f0a0005;
+        public static final int image=0x7f0a0011;
+        public static final int materialdialog_background=0x7f0a0005;
+        public static final int materialdialog_buttonLayout=0x7f0a000a;
+        public static final int materialdialog_contentView=0x7f0a0006;
+        public static final int materialdialog_empty_view=0x7f0a000b;
+        public static final int materialdialog_message=0x7f0a0009;
+        public static final int materialdialog_message_content_view=0x7f0a0008;
+        public static final int menu_settings=0x7f0a0013;
+        public static final int news_list=0x7f0a000e;
+        public static final int progress=0x7f0a0012;
+        public static final int search_btn=0x7f0a000d;
+        public static final int search_txt=0x7f0a000c;
+        public static final int title=0x7f0a0007;
         public static final int view_pager=0x7f0a0001;
     }
     public static final class integer {
@@ -131,9 +149,10 @@ containing a value of this type.
         public static final int activity_main=0x7f030001;
         public static final int activity_viewpager=0x7f030002;
         public static final int dialog_loading=0x7f030003;
-        public static final int header=0x7f030004;
-        public static final int item=0x7f030005;
-        public static final int item_viewpager=0x7f030006;
+        public static final int dialog_materialdialog=0x7f030004;
+        public static final int header=0x7f030005;
+        public static final int item=0x7f030006;
+        public static final int item_viewpager=0x7f030007;
     }
     public static final class menu {
         public static final int menu_main=0x7f090000;

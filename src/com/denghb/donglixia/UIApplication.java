@@ -9,16 +9,13 @@ import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
-import android.os.StrictMode;
 
 public class UIApplication extends Application {
 	
-	@SuppressWarnings("unused")
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	@Override
 	public void onCreate() {
 		super.onCreate();
-
 		initImageLoader(getApplicationContext());
 	}
 

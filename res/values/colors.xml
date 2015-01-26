@@ -8,4 +8,12 @@
     <color name="red">#fff10800</color>
     
     <color name="grey2">#dddddddd</color>
+    
+    
+    <!-- material_dialog start -->
+    <color name="materialdialog_card_background">#ffffff</color>
+    <color name="materialdialog_card_shadow">#10000000</color>
+    <color name="materialdialog_lite_blue">#ff359ff2</color>
+    <color name="materialdialog_window_background">#00000000</color>
+    <!-- material_dialog end -->
 </resources>
