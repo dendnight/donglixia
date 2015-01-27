@@ -33,47 +33,43 @@ public class InfoActivity extends Activity implements
 	private StaggeredGridView mGridView;
 	private DonglixiaAdapter mAdapter;
 
-	private final List<Donglixia> list = new ArrayList<Donglixia>();
+	private List<Donglixia> list;
 
 	private String[] urls;
 
-	private Dialog dialog;
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_info);
 
-		dialog = Helper.createLoadingDialog(this, "");
-		dialog.show();
 		request();
-
 		mGridView = (StaggeredGridView) findViewById(R.id.grid_view);
 
+		list = Helper.generateSampleData();
+		mAdapter = new DonglixiaAdapter(this, list);
 		LayoutInflater layoutInflater = getLayoutInflater();
 
 		// 头部
-		View header = layoutInflater.inflate(R.layout.header, null);
-
+		View header = layoutInflater.inflate(R.layout.info_header, null);
 		mGridView.addHeaderView(header);
-
-		// list 可以缓存
-		mAdapter = new DonglixiaAdapter(this, list);
+		// 尾部
+		View footer = layoutInflater.inflate(R.layout.info_footer, null);
+		mGridView.addFooterView(footer);
 
 		mGridView.setAdapter(mAdapter);
 		mGridView.setOnItemClickListener(this);
 
 	}
-
+	
 	/**
 	 * 请求服务器
 	 */
 	private void request() {
 		// 接收传来的ID
 		int i = getIntent().getIntExtra(Constants.Extra.ID, 0);
-		String url = Constants.Server.info(i);
 		// 请求url
-		InfoObtain infoObtain = new InfoObtain(this, handler, url);
+		InfoObtain infoObtain = new InfoObtain(this, handler, i);
 		infoObtain.start();
 
 	}
@@ -83,25 +79,23 @@ public class InfoActivity extends Activity implements
 	 */
 	private final Handler handler = new Handler() {
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public void handleMessage(Message msg) {
-			dialog.dismiss();
-			
-			if (msg.what == Constants.WHAT.COMPLETED) {
-				List<Donglixia> myList = (List<Donglixia>) msg.obj;
 
-				// 跳转至大图
-				urls = new String[myList.size()];
+			if (msg.what == Constants.What.INFO) {
+				List<Donglixia> temp = new ArrayList<Donglixia>();
 
-				for (int i = 0; i < urls.length; i++) {
-					urls[i] = myList.get(i).getUrl();
+				urls = (String[]) msg.obj;
+				int length = urls.length;
+				for (int i = 0; i < length; i++) {
+					Donglixia donglixia = new Donglixia();
+					donglixia.setUrl(urls[i]);
+					temp.add(donglixia);
 				}
-
-				startViewPagerActivity(0);
-
-				list.addAll(myList);
+				list.clear();
+				list.addAll(temp);
 				mAdapter.notifyDataSetChanged();
+
 			}
 		}
 	};
@@ -117,9 +111,7 @@ public class InfoActivity extends Activity implements
 		intent.putExtra(Constants.Extra.URLS, urls);
 		intent.putExtra(Constants.Extra.IMAGE_POSITION, position - 1);
 		startActivity(intent);
-		
 		overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
-
 	}
 
 	@Override
@@ -141,6 +133,6 @@ public class InfoActivity extends Activity implements
 	// finish当前activity
 	private void finishActivity() {
 		this.finish();
-		overridePendingTransition(0,0);
+		overridePendingTransition(0, 0);
 	}
 }

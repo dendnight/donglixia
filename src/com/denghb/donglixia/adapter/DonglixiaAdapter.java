@@ -79,7 +79,6 @@ public class DonglixiaAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Log.i("position :", position + "");
 		// 东篱下属性
 		final Donglixia donglixia = list.get(position);
 		ViewHolder viewholder = null;

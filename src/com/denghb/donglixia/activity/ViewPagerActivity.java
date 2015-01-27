@@ -1,5 +1,7 @@
 package com.denghb.donglixia.activity;
 
+import java.util.List;
+
 import com.denghb.donglixia.Constants;
 import com.denghb.donglixia.R;
 import com.denghb.donglixia.tools.Helper;
@@ -10,8 +12,10 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -22,7 +26,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-public class ViewPagerActivity extends Activity implements View.OnClickListener {
+@SuppressLint("HandlerLeak")
+public class ViewPagerActivity extends Activity {
 
 	/**
 	 * Step 1: Download and set up v4 support library:
@@ -34,18 +39,23 @@ public class ViewPagerActivity extends Activity implements View.OnClickListener 
 	 * XML should be ExtendedViewPager
 	 */
 
+	ExtendedViewPager mViewPager = null;
+	TouchImageAdapter mAdapter = null;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_viewpager);
-		ExtendedViewPager mViewPager = (ExtendedViewPager) findViewById(R.id.view_pager);
+		mViewPager = (ExtendedViewPager) findViewById(R.id.view_pager);
 
+		//
 		String[] urls = getIntent().getStringArrayExtra(Constants.Extra.URLS);
 		int position = getIntent().getIntExtra(Constants.Extra.IMAGE_POSITION,
 				0);
-		mViewPager.setAdapter(new TouchImageAdapter(this, urls));
+		mAdapter = new TouchImageAdapter(this, urls);
+		mViewPager.setAdapter(mAdapter);
 		mViewPager.setCurrentItem(position);
-		mViewPager.setOnClickListener(this);
+
 	}
 
 	// 处理后退键的情况
@@ -57,12 +67,22 @@ public class ViewPagerActivity extends Activity implements View.OnClickListener 
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	// finish当前activity
-	private void finishActivity()
-	{
-		this.finish(); 
-		overridePendingTransition(0,0);
+	private void finishActivity() {
+		boolean iscreate = getIntent().getBooleanExtra(
+				Constants.Extra.CREATE_INFO, false);
+		if (iscreate) {
+			Intent intent = new Intent(ViewPagerActivity.this,
+					InfoActivity.class);
+			// 将ID传
+			int id = getIntent().getIntExtra(Constants.Extra.ID, 0);
+
+			intent.putExtra(Constants.Extra.ID, id);
+			startActivity(intent);
+		}
+		this.finish();
+		overridePendingTransition(0, 0);
 	}
 
 	static class TouchImageAdapter extends PagerAdapter {
@@ -72,7 +92,6 @@ public class ViewPagerActivity extends Activity implements View.OnClickListener 
 
 		public TouchImageAdapter(Context context, String[] urls) {
 			this.mLayoutInflater = LayoutInflater.from(context);
-
 			this.urls = urls;
 		}
 
@@ -93,6 +112,7 @@ public class ViewPagerActivity extends Activity implements View.OnClickListener 
 			container.addView(view, LinearLayout.LayoutParams.MATCH_PARENT,
 					LinearLayout.LayoutParams.MATCH_PARENT);
 
+			// 加载图片
 			ImageLoader.getInstance().displayImage(urls[position],
 					holder.imageView, Helper.displayImageOptions(),
 					new SimpleImageLoadingListener() {
@@ -143,9 +163,4 @@ public class ViewPagerActivity extends Activity implements View.OnClickListener 
 		}
 	}
 
-
-	@Override
-	public void onClick(View v) {
-		finishActivity();
-	}
 }

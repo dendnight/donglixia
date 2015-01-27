@@ -16,6 +16,7 @@ import com.denghb.donglixia.tools.Helper;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 /**
  * 主操作
@@ -25,6 +26,8 @@ import android.os.Message;
  */
 public class MainObtain extends Thread {
 
+	private static final String TAG = MainObtain.class.getSimpleName();
+	
 	private Context context;
 
 	private Handler handler;
@@ -56,7 +59,7 @@ public class MainObtain extends Thread {
 
 		try {
 			JSONObject jsonObject = new JSONObject(json);
-			JSONArray dataArray = jsonObject.getJSONArray("DATA");
+			JSONArray dataArray = jsonObject.getJSONArray(Constants.JSON.DATA);
 
 			int length = dataArray.length();
 			for (int i = 0; i < length; i++) {
@@ -75,11 +78,12 @@ public class MainObtain extends Thread {
 				list.add(donglixia);
 			}
 		} catch (JSONException e) {
-			e.printStackTrace();
+			Log.d(TAG, e.getMessage(), e);
 		}
 		// 成功
-		msg.what = Constants.WHAT.COMPLETED;
+		msg.what = Constants.What.LIST;
 		msg.obj = list;
+		msg.arg1 = Constants.Arg1.COMPLETED;
 		handler.sendMessage(msg);
 	}
 }

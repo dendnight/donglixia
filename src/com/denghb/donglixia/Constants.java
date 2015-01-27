@@ -21,6 +21,9 @@ public final class Constants {
 		/** 检测版本 */
 		private static final String VERSION = "/app/version/";
 
+		/** 主页 */
+		private static final String HOME = "/app/";
+
 		/**
 		 * 列表
 		 * 
@@ -51,6 +54,15 @@ public final class Constants {
 			return HOST + VERSION;
 		}
 
+		/**
+		 * 主页
+		 * 
+		 * @return
+		 */
+		public static String home() {
+			return HOST + HOME;
+		}
+
 	}
 
 	/**
@@ -66,16 +78,48 @@ public final class Constants {
 		/** position */
 		public static final String IMAGE_POSITION = "IMAGE_POSITION";
 
+		/** 是否创建 */
+		public static final String CREATE_INFO = "CREATE_INFO";
+		
 	}
 
 	/**
 	 * 消息类型
 	 */
-	public static class WHAT {
+	public static class What {
+
+		/** 主列表 */
+		public static final int LIST = 1;
+
+		/** 详情 */
+		public static final int INFO = 2;
+
+		/** 检查版本 */
+		public static final int VERSION = 0;
+
+	}
+
+	/**
+	 * 消息标记
+	 */
+	public static class Arg1 {
 		/** 成功 */
 		public static final int COMPLETED = 1;
 		/** 失败 */
 		public static final int FAILURE = 0;
+	}
 
+	/**
+	 * json 返回数据key
+	 */
+	public static class JSON {
+		/** 状态 */
+		public static final String STATUS = "STATUS";
+
+		/** 数据 */
+		public static final String DATA = "DATA";
+
+		/** 版本 */
+		public static final String VERSION = "ANDROID_VERSION";
 	}
 }

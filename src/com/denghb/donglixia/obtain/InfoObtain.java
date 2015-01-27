@@ -1,7 +1,5 @@
 package com.denghb.donglixia.obtain;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
@@ -10,12 +8,13 @@ import org.json.JSONObject;
 
 import com.denghb.donglixia.Constants;
 import com.denghb.donglixia.http.HttpRetriever;
-import com.denghb.donglixia.model.Donglixia;
 import com.denghb.donglixia.tools.Helper;
+import com.denghb.donglixia.tools.MemoryCache;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 /**
  * 主操作
@@ -25,51 +24,62 @@ import android.os.Message;
  */
 public class InfoObtain extends Thread {
 
+	private static final String TAG = InfoObtain.class.getSimpleName();
+
 	private Context context;
 
 	private Handler handler;
 
-	private String url;
+	private int id;
 
-	public InfoObtain(Context context, Handler handler, String url) {
+	public InfoObtain(Context context, Handler handler, int id) {
 		this.context = context;
 		this.handler = handler;
-		this.url = url;
+		this.id = id;
 	}
 
 	@Override
 	public void run() {
-		if(!Helper.checkConnection(context))
-		{
+		if (!Helper.checkConnection(context)) {
 			return;
 		}
 		// 请求完毕发消息
 		Message msg = new Message();
-		List<Donglixia> list = new ArrayList<Donglixia>();
 
-		HttpRetriever httpRetriever = new HttpRetriever();
-		HttpResponse response = httpRetriever.requestPost(url, null);
+		String[] urls = null;
 
-		String json = httpRetriever.decodeToJsonString(response);
+		// 判断是否有缓存
+		MemoryCache cache = MemoryCache.instance();
+		Object object = cache.read(id);
+		if (null != object && object instanceof String[]) {
+			urls = (String[]) object;
+		} else {
 
-		// 获取
-		try {
-			JSONObject jsonObject = new JSONObject(json);
-			JSONArray dataArray = jsonObject.getJSONArray("DATA");
+			HttpRetriever httpRetriever = new HttpRetriever();
+			String url = Constants.Server.info(id);
+			HttpResponse response = httpRetriever.requestPost(url, null);
 
-			int length = dataArray.length();
-			for (int i = 0; i < length; i++) {
+			String json = httpRetriever.decodeToJsonString(response);
 
-				Donglixia donglixia = new Donglixia();
-				donglixia.setUrl(dataArray.getString(i));
-				list.add(donglixia);
+			// 获取
+			try {
+				JSONObject jsonObject = new JSONObject(json);
+				JSONArray dataArray = jsonObject
+						.getJSONArray(Constants.JSON.DATA);
+
+				int length = dataArray.length();
+				urls = new String[length];
+				for (int i = 0; i < length; i++) {
+					urls[i] = dataArray.getString(i);
+				}
+			} catch (JSONException e) {
+				Log.d(TAG, e.getMessage(), e);
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
-		// 成功
-		msg.what = Constants.WHAT.COMPLETED;
-		msg.obj = list;
+		msg.what = Constants.What.INFO;
+		msg.obj = urls;
+		msg.arg1 = Constants.Arg1.COMPLETED;
+
 		handler.sendMessage(msg);
 	}
 }

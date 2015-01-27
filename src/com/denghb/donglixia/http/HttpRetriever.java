@@ -64,7 +64,8 @@ public class HttpRetriever {
 		Log.i(TAG, "httpGet url: " + url);
 		// 2.
 		if (headers != null) {
-			Iterator<Entry<String, String>> iterator = headers.entrySet().iterator();
+			Iterator<Entry<String, String>> iterator = headers.entrySet()
+					.iterator();
 			while (iterator.hasNext()) {
 				Entry<String, String> entry = iterator.next();
 				String headeName = entry.getKey();
@@ -108,7 +109,8 @@ public class HttpRetriever {
 
 		// 2.
 		if (headers != null) {
-			Iterator<Entry<String, String>> iterator = headers.entrySet().iterator();
+			Iterator<Entry<String, String>> iterator = headers.entrySet()
+					.iterator();
 			while (iterator.hasNext()) {
 				Entry<String, String> entry = iterator.next();
 				String headeName = entry.getKey();
@@ -155,29 +157,43 @@ public class HttpRetriever {
 	}
 
 	/**
-	 * 转换成json
+	 * 返回json数据
+	 * 
 	 * @param response
 	 * @return
 	 */
-	public String decodeToJsonString(HttpResponse response) {
+	public String jsonString(HttpResponse response) {
 		StatusLine statusLine = response.getStatusLine();
 		int statueCode = statusLine.getStatusCode();
 		if (statueCode == HttpStatus.SC_OK) {
 			HttpEntity entity = response.getEntity();
 			try {
-				String json = EntityUtils.toString(entity, HTTP.UTF_8);
-				// 从第1个开始截9个
-				String de1 = json.substring(1, 9);
-				String de2 = json.substring(10, json.length());
-				json = de1 + de2;
-
-				byte[] result = Base64.decode(json, Base64.DEFAULT);
-				json = new String(result);
-				Log.d("JSON", json);
-				return json;
+				return EntityUtils.toString(entity, HTTP.UTF_8);
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.d(TAG, e.getMessage(), e);
 			}
+		}
+		return null;
+	}
+
+	/**
+	 * 转换成json
+	 * 
+	 * @param response
+	 * @return
+	 */
+	public String decodeToJsonString(HttpResponse response) {
+		String json = jsonString(response);
+		if (null != json) {
+			// 从第1个开始截9个
+			String de1 = json.substring(1, 9);
+			String de2 = json.substring(10, json.length());
+			json = de1 + de2;
+
+			byte[] result = Base64.decode(json, Base64.DEFAULT);
+			json = new String(result);
+			Log.d("JSON", json);
+			return json;
 		}
 		return null;
 	}
