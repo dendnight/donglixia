@@ -74,12 +74,16 @@ public class Helper {
 	}
 
 	/**
-	 * 生成10个假数据
-	 * 
+	 * 生成制定个数个假数据
+	 * @param count 数量
 	 * @return
 	 */
-	public static ArrayList<Donglixia> generateSampleData() {
-		final ArrayList<Donglixia> data = new ArrayList<Donglixia>(10);
+	public static ArrayList<Donglixia> generateSampleData(int count) {
+		if(1 > count)
+		{
+			count = 1;
+		}
+		final ArrayList<Donglixia> data = new ArrayList<Donglixia>(count);
 
 		for (int i = 0; i < 10; i++) {
 			data.add(new Donglixia());

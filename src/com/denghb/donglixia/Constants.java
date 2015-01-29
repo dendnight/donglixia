@@ -10,7 +10,8 @@ public final class Constants {
 	 */
 	public static class Server {
 		/** 服务器 */
-		private static final String HOST = "http://donglixia.sinaapp.com";
+		// private static final String HOST = "http://donglixia.sinaapp.com";
+		private static final String HOST = "http://192.168.1.102";
 
 		/** 列表 */
 		private static final String LIST = "/app/service/";
@@ -80,7 +81,7 @@ public final class Constants {
 
 		/** 是否创建 */
 		public static final String CREATE_INFO = "CREATE_INFO";
-		
+
 	}
 
 	/**
@@ -102,7 +103,7 @@ public final class Constants {
 	/**
 	 * 消息标记
 	 */
-	public static class Arg1 {
+	public static class Status {
 		/** 成功 */
 		public static final int COMPLETED = 1;
 		/** 失败 */
@@ -119,7 +120,22 @@ public final class Constants {
 		/** 数据 */
 		public static final String DATA = "DATA";
 
+		/** 数量 */
+		public static final String TOTAL = "TOTAL";
+
 		/** 版本 */
 		public static final String VERSION = "ANDROID_VERSION";
+
+		/** 路径 */
+		public static final String URL = "URL";
+
+		/** 标签 */
+		public static final String TAG = "TAG";
+
+		/** id */
+		public static final String ID = "ID";
+
+		/** 喜欢 */
+		public static final String LOVE = "LOVE";
 	}
 }

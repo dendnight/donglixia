@@ -66,7 +66,6 @@ public class VersionObtain extends Thread {
 
 		msg.what = Constants.What.VERSION;
 		msg.obj = isUpdate;
-		msg.arg1 = Constants.Arg1.COMPLETED;
 		handler.sendMessage(msg);
 	}
 }

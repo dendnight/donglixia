@@ -48,12 +48,18 @@ public class MainActivity extends Activity implements
 
 	private int page = 1;
 	private String tag = "";
-
+	private int total = 1;
+	
 	private EditText etSearch;
 
 	private MaterialDialog mMaterialDialog;
+	
+	/** 是否请求查询 */
 	private boolean mHasRequestedSearch;
-
+	
+	/** 非WIFI下加载 */
+	private boolean isNotWifiLoad = false;
+	
 	@SuppressLint({ "NewApi", "InflateParams" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +77,7 @@ public class MainActivity extends Activity implements
 
 		mGridView.addHeaderView(header);
 
-		list = Helper.generateSampleData();
+		list = Helper.generateSampleData(10);
 		mAdapter = new DonglixiaAdapter(this, list);
 
 		mGridView.setAdapter(mAdapter);
@@ -134,11 +140,12 @@ public class MainActivity extends Activity implements
 
 		// 判断是否是WIFI
 		boolean isWifi = Helper.isWifi(this);
-		if (!isWifi) {
+		if (!isWifi || isNotWifiLoad) {
 			mMaterialDialog.setTitle("提示").setMessage("您当前不是Wi-Fi连接请确认是否继续？")
 					.setPositiveButton("确定", new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
+							isNotWifiLoad = true;
 							request();
 							mMaterialDialog.dismiss();
 						}
@@ -183,6 +190,9 @@ public class MainActivity extends Activity implements
 					list.clear();
 				}
 
+				// 总条数
+				total = msg.arg2;
+				
 				list.addAll((List<Donglixia>) msg.obj);
 				mAdapter.notifyDataSetChanged();
 				mHasRequestedMore = false;
@@ -238,8 +248,8 @@ public class MainActivity extends Activity implements
 		Log.d(TAG, "onScroll firstVisibleItem:" + firstVisibleItem
 				+ " visibleItemCount:" + visibleItemCount + " totalItemCount:"
 				+ totalItemCount);
-		// our handling
-		if (!mHasRequestedMore && 1 < totalItemCount) {
+		// 是否加载，不能超过总条数
+		if (!mHasRequestedMore && total > totalItemCount) {
 			int lastInScreen = firstVisibleItem + visibleItemCount;
 			if (lastInScreen >= totalItemCount) {
 				Log.d(TAG, "onScroll lastInScreen - so load more");
@@ -254,7 +264,11 @@ public class MainActivity extends Activity implements
 			int position, long id) {
 		try {
 			Donglixia d = list.get(position - 1);
-
+			// 空对象
+			if(null == d || null == d.getUrl())
+			{
+				return;
+			}
 			// 请求数据然后缓存
 			InfoObtain infoObtain = new InfoObtain(this, handler, d.getId());
 			infoObtain.start();
@@ -271,7 +285,7 @@ public class MainActivity extends Activity implements
 			startActivity(intent);
 
 			// 动画
-			overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+			overridePendingTransition(0, 0);
 		} catch (Exception e) {
 			Log.d(TAG, e.getMessage(), e);
 		}

@@ -1,6 +1,5 @@
 package com.denghb.donglixia.obtain;
 
-
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +50,8 @@ public class InfoObtain extends Thread {
 		// 判断是否有缓存
 		MemoryCache cache = MemoryCache.instance();
 		Object object = cache.read(id);
+		
+		int status = Constants.Status.COMPLETED;
 		if (null != object && object instanceof String[]) {
 			urls = (String[]) object;
 		} else {
@@ -66,19 +67,21 @@ public class InfoObtain extends Thread {
 				JSONObject jsonObject = new JSONObject(json);
 				JSONArray dataArray = jsonObject
 						.getJSONArray(Constants.JSON.DATA);
-
+				status = jsonObject.getInt(Constants.JSON.STATUS);
+				
 				int length = dataArray.length();
 				urls = new String[length];
 				for (int i = 0; i < length; i++) {
 					urls[i] = dataArray.getString(i);
 				}
+				msg.arg1 = Constants.Status.COMPLETED;
 			} catch (JSONException e) {
 				Log.d(TAG, e.getMessage(), e);
 			}
 		}
 		msg.what = Constants.What.INFO;
 		msg.obj = urls;
-		msg.arg1 = Constants.Arg1.COMPLETED;
+		msg.arg1 = status;
 
 		handler.sendMessage(msg);
 	}

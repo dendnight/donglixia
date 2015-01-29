@@ -46,7 +46,7 @@ public class InfoActivity extends Activity implements
 		request();
 		mGridView = (StaggeredGridView) findViewById(R.id.grid_view);
 
-		list = Helper.generateSampleData();
+		list = Helper.generateSampleData(1);
 		mAdapter = new DonglixiaAdapter(this, list);
 		LayoutInflater layoutInflater = getLayoutInflater();
 
@@ -107,11 +107,17 @@ public class InfoActivity extends Activity implements
 	 */
 	private void startViewPagerActivity(int position) {
 
+		// 空对象
+		if(null == urls)
+		{
+			return;
+		}
+		
 		Intent intent = new Intent(InfoActivity.this, ViewPagerActivity.class);
 		intent.putExtra(Constants.Extra.URLS, urls);
 		intent.putExtra(Constants.Extra.IMAGE_POSITION, position - 1);
 		startActivity(intent);
-		overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+		overridePendingTransition(0, 0);
 	}
 
 	@Override

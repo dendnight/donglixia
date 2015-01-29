@@ -185,15 +185,14 @@ public class HttpRetriever {
 	public String decodeToJsonString(HttpResponse response) {
 		String json = jsonString(response);
 		if (null != json) {
-			// 从第1个开始截9个
-			String de1 = json.substring(1, 9);
-			String de2 = json.substring(10, json.length());
-			json = de1 + de2;
-
-			byte[] result = Base64.decode(json, Base64.DEFAULT);
-			json = new String(result);
-			Log.d("JSON", json);
-			return json;
+			try {
+				byte[] result = Base64.decode("ey" + json, Base64.DEFAULT);
+				json = new String(result);
+				Log.d(TAG, json);
+				return json;
+			} catch (Exception e) {
+				Log.d(TAG, e.getMessage(), e);
+			}
 		}
 		return null;
 	}

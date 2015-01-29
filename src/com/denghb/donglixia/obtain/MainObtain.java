@@ -27,7 +27,7 @@ import android.util.Log;
 public class MainObtain extends Thread {
 
 	private static final String TAG = MainObtain.class.getSimpleName();
-	
+
 	private Context context;
 
 	private Handler handler;
@@ -42,8 +42,7 @@ public class MainObtain extends Thread {
 
 	@Override
 	public void run() {
-		if(!Helper.checkConnection(context))
-		{
+		if (!Helper.checkConnection(context)) {
 			return;
 		}
 		// 请求完毕发消息
@@ -56,19 +55,22 @@ public class MainObtain extends Thread {
 		String json = httpRetriever.decodeToJsonString(response);
 
 		// 获取
-
+		int total = 0;
+		int status = 0;
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 			JSONArray dataArray = jsonObject.getJSONArray(Constants.JSON.DATA);
+			total = jsonObject.getInt(Constants.JSON.TOTAL);
+			status = jsonObject.getInt(Constants.JSON.STATUS);
 
 			int length = dataArray.length();
 			for (int i = 0; i < length; i++) {
 
 				JSONObject obj = dataArray.getJSONObject(i);
-				String urls = obj.getString("URL");
-				String tag = obj.getString("TAG");
-				int id = obj.getInt("ID");
-				int love = obj.getInt("LOVE");
+				String urls = obj.getString(Constants.JSON.URL);
+				String tag = obj.getString(Constants.JSON.TAG);
+				int id = obj.getInt(Constants.JSON.ID);
+				int love = obj.getInt(Constants.JSON.LOVE);
 
 				Donglixia donglixia = new Donglixia();
 				donglixia.setId(id);
@@ -83,7 +85,8 @@ public class MainObtain extends Thread {
 		// 成功
 		msg.what = Constants.What.LIST;
 		msg.obj = list;
-		msg.arg1 = Constants.Arg1.COMPLETED;
+		msg.arg1 = status;
+		msg.arg2 = total;
 		handler.sendMessage(msg);
 	}
 }
