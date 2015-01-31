@@ -8,6 +8,7 @@ import com.denghb.donglixia.R;
 import com.denghb.donglixia.activity.ViewPagerActivity;
 import com.denghb.donglixia.adapter.DonglixiaAdapter;
 import com.denghb.donglixia.model.Donglixia;
+import com.denghb.donglixia.obtain.LoveObtain;
 import com.denghb.donglixia.obtain.MainObtain;
 import com.denghb.donglixia.tools.Helper;
 import com.denghb.donglixia.widget.MaterialDialog;
@@ -235,7 +236,7 @@ public class DonglixiaFragment extends BaseFragment implements AbsListView.OnScr
 		}
 		// 显示没有更多的了
 		if (null != footerView) {
-			if (total == totalItemCount) {
+			if (total <= totalItemCount + 9) {
 				footerView.setVisibility(View.VISIBLE);
 			} else {
 				footerView.setVisibility(View.GONE);
@@ -251,6 +252,7 @@ public class DonglixiaFragment extends BaseFragment implements AbsListView.OnScr
 			if (null == donglixia) {
 				return;
 			}
+
 			Intent intent = new Intent(getActivity(), ViewPagerActivity.class);
 			// 将当前的图片列表
 			intent.putStringArrayListExtra(Constants.Extra.URLS, donglixia.getUrls());
@@ -258,6 +260,9 @@ public class DonglixiaFragment extends BaseFragment implements AbsListView.OnScr
 			startActivity(intent);
 			// 动画
 			getActivity().overridePendingTransition(0, 0);
+			// 喜欢+1
+			LoveObtain mainObtain = new LoveObtain(getActivity(), handler, donglixia.getId());
+			mainObtain.start();
 		} catch (Exception e) {
 			Log.d(TAG, e.getMessage(), e);
 		}

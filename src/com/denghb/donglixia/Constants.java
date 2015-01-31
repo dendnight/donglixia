@@ -17,7 +17,7 @@ public final class Constants {
 		private static final String LIST = "/app/service/";
 
 		/** 详情 */
-		private static final String INFO = "/app/service/info/";
+		private static final String LOVE = "/app/service/love/";
 
 		/** 检测版本 */
 		private static final String VERSION = "/app/version/";
@@ -37,13 +37,13 @@ public final class Constants {
 		}
 
 		/**
-		 * 详情
+		 * 喜欢
 		 * 
 		 * @param i
 		 * @return
 		 */
-		public static String info(int i) {
-			return HOST + INFO + "?i=" + i;
+		public static String love(int i) {
+			return HOST + LOVE + "?i=" + i;
 		}
 
 		/**
@@ -101,7 +101,7 @@ public final class Constants {
 			public static final int LIST = 201;
 
 			/** 详情 */
-			public static final int INFO = 202;
+			public static final int LOVE = 202;
 
 		}
 		/** 本地 */
