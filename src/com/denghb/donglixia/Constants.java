@@ -10,8 +10,8 @@ public final class Constants {
 	 */
 	public static class Server {
 		/** 服务器 */
-		private static final String HOST = "http://donglixia.sinaapp.com";
-		// private static final String HOST = "http://192.168.1.102";
+		//private static final String HOST = "http://donglixia.sinaapp.com";
+		private static final String HOST = "http://192.168.1.102";
 
 		/** 列表 */
 		private static final String LIST = "/app/service/";
@@ -141,8 +141,8 @@ public final class Constants {
 		/** 版本 */
 		public static final String VERSION = "ANDROID_VERSION";
 
-		/** 路径 */
-		public static final String URL = "URL";
+		/** 路径集合 */
+		public static final String URLS = "URLS";
 
 		/** 标签 */
 		public static final String TAG = "TAG";

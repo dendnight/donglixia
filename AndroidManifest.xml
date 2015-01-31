@@ -29,7 +29,6 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".activity.InfoActivity"></activity>
         <activity android:name=".activity.ImageListActivity"></activity>
         <activity android:name=".activity.ViewPagerActivity"></activity>
     </application>

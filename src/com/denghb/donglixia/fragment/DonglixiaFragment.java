@@ -5,11 +5,9 @@ import java.util.List;
 
 import com.denghb.donglixia.Constants;
 import com.denghb.donglixia.R;
-import com.denghb.donglixia.activity.MainActivity;
 import com.denghb.donglixia.activity.ViewPagerActivity;
 import com.denghb.donglixia.adapter.DonglixiaAdapter;
 import com.denghb.donglixia.model.Donglixia;
-import com.denghb.donglixia.obtain.InfoObtain;
 import com.denghb.donglixia.obtain.MainObtain;
 import com.denghb.donglixia.tools.Helper;
 import com.denghb.donglixia.widget.MaterialDialog;
@@ -45,16 +43,17 @@ import android.widget.AdapterView;
  * 
  * </pre>
  */
+@SuppressLint("HandlerLeak")
 public class DonglixiaFragment extends BaseFragment implements AbsListView.OnScrollListener,
 		AbsListView.OnItemClickListener {
 
-	private static final String TAG = MainActivity.class.getSimpleName();
+	private static final String TAG = DonglixiaFragment.class.getSimpleName();
 
 	private StaggeredGridView mGridView;
 	private boolean mHasRequestedMore;
 	private DonglixiaAdapter mAdapter;
 
-	private List<Donglixia> list;
+	private ArrayList<Donglixia> list;
 
 	private int page = 1;
 	private String tag = "";
@@ -230,25 +229,16 @@ public class DonglixiaFragment extends BaseFragment implements AbsListView.OnScr
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 		try {
-			Donglixia d = list.get(position);
+			Donglixia donglixia = list.get(position);
 			// 空对象
-			if (null == d || null == d.getUrl()) {
+			if (null == donglixia) {
 				return;
 			}
-			// 请求数据然后缓存
-			InfoObtain infoObtain = new InfoObtain(getActivity(), handler, d.getId());
-			infoObtain.start();
-
 			Intent intent = new Intent(getActivity(), ViewPagerActivity.class);
-			// 将当前的图片传上去
-			ArrayList<String> list = new ArrayList<String>();
-			list.add(d.getUrl());
-			
-			intent.putStringArrayListExtra(Constants.Extra.URLS, list);
+			// 将当前的图片列表
+			intent.putStringArrayListExtra(Constants.Extra.URLS, donglixia.getUrls());
 			intent.putExtra(Constants.Extra.IMAGE_POSITION, 0);
-			intent.putExtra(Constants.Extra.ID, d.getId());
 			startActivity(intent);
-
 			// 动画
 			getActivity().overridePendingTransition(0, 0);
 		} catch (Exception e) {
