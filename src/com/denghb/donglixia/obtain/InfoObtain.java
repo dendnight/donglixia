@@ -79,7 +79,7 @@ public class InfoObtain extends Thread {
 				Log.d(TAG, e.getMessage(), e);
 			}
 		}
-		msg.what = Constants.What.INFO;
+		msg.what = Constants.What.Donglixia.INFO;
 		msg.obj = urls;
 		msg.arg1 = status;
 

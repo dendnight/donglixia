@@ -10,7 +10,7 @@
  * Extends Android ImageView to include pinch zooming, panning, fling and double tap zoom.
  */
 
-package com.denghb.donglixia.widget.touch;
+package com.denghb.donglixia.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;
