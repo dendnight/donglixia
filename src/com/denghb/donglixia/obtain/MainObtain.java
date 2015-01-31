@@ -42,22 +42,24 @@ public class MainObtain extends Thread {
 
 	@Override
 	public void run() {
+
 		if (!Helper.checkConnection(context)) {
 			return;
 		}
 		// 请求完毕发消息
 		Message msg = new Message();
 		List<Donglixia> list = new ArrayList<Donglixia>();
-
-		HttpRetriever httpRetriever = new HttpRetriever();
-		HttpResponse response = httpRetriever.requestPost(url, null);
-
-		String json = httpRetriever.decodeToJsonString(response);
-
+		
 		// 获取
 		int total = 0;
 		int status = 0;
 		try {
+
+			HttpRetriever httpRetriever = new HttpRetriever();
+			HttpResponse response = httpRetriever.requestPost(url, null);
+
+			String json = httpRetriever.decodeToJsonString(response);
+
 			JSONObject jsonObject = new JSONObject(json);
 			JSONArray dataArray = jsonObject.getJSONArray(Constants.JSON.DATA);
 			total = jsonObject.getInt(Constants.JSON.TOTAL);
@@ -81,9 +83,11 @@ public class MainObtain extends Thread {
 			}
 		} catch (JSONException e) {
 			Log.d(TAG, e.getMessage(), e);
+		} catch (Exception e) {
+			Log.d(TAG, e.getMessage(), e);
 		}
 		// 成功
-		msg.what = Constants.What.LIST;
+		msg.what = Constants.What.Donglixia.LIST;
 		msg.obj = list;
 		msg.arg1 = status;
 		msg.arg2 = total;

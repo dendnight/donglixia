@@ -10,8 +10,8 @@ public final class Constants {
 	 */
 	public static class Server {
 		/** 服务器 */
-		// private static final String HOST = "http://donglixia.sinaapp.com";
-		private static final String HOST = "http://192.168.1.102";
+		private static final String HOST = "http://donglixia.sinaapp.com";
+		// private static final String HOST = "http://192.168.1.102";
 
 		/** 列表 */
 		private static final String LIST = "/app/service/";
@@ -79,25 +79,40 @@ public final class Constants {
 		/** position */
 		public static final String IMAGE_POSITION = "IMAGE_POSITION";
 
-		/** 是否创建 */
-		public static final String CREATE_INFO = "CREATE_INFO";
+		/** 文件夹名 */
+		public static final String DIR_NAME = "DIR_NAME";
+		
+		/** 标题 */
+		public static final String TITLE = "TITLE";
 
 	}
 
 	/**
-	 * 消息类型
+	 * 消息类型{值唯一}
 	 */
 	public static class What {
 
-		/** 主列表 */
-		public static final int LIST = 1;
-
-		/** 详情 */
-		public static final int INFO = 2;
-
 		/** 检查版本 */
 		public static final int VERSION = 0;
+		
+		/** 东篱下 */
+		public static class Donglixia {
+			/** 主列表 */
+			public static final int LIST = 201;
 
+			/** 详情 */
+			public static final int INFO = 202;
+
+		}
+		/** 本地 */
+		public static class Native{
+
+			/** 文件夹列表 */
+			public static final int GROUP = 101;
+
+			/** 文件夹里面 */
+			public static final int ITEM = 102;
+		}
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package com.denghb.donglixia.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.denghb.donglixia.Constants;
@@ -13,9 +12,9 @@ import com.denghb.donglixia.obtain.VersionObtain;
 import com.denghb.donglixia.tools.Helper;
 import com.denghb.donglixia.widget.StaggeredGridView;
 import com.denghb.donglixia.widget.materialdialog.MaterialDialog;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -23,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -34,9 +34,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 @SuppressLint("HandlerLeak")
-public class MainActivity extends Activity implements
-		AbsListView.OnScrollListener, AbsListView.OnItemClickListener,
-		View.OnClickListener {
+public class MainActivity extends FragmentActivity implements AbsListView.OnScrollListener,
+		AbsListView.OnItemClickListener, View.OnClickListener {
 
 	private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -49,17 +48,17 @@ public class MainActivity extends Activity implements
 	private int page = 1;
 	private String tag = "";
 	private int total = 1;
-	
+
 	private EditText etSearch;
 
 	private MaterialDialog mMaterialDialog;
-	
+
 	/** 是否请求查询 */
 	private boolean mHasRequestedSearch;
-	
+
 	/** 非WIFI下加载 */
 	private boolean isNotWifiLoad = false;
-	
+
 	@SuppressLint({ "NewApi", "InflateParams" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +90,9 @@ public class MainActivity extends Activity implements
 
 		try {
 			// 获取版本信息
-			PackageInfo info = this.getPackageManager().getPackageInfo(
-					this.getPackageName(), 0);
+			PackageInfo info = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
 			int versionCode = info.versionCode;
-			VersionObtain versionObtain = new VersionObtain(this, handler,
-					versionCode);
+			VersionObtain versionObtain = new VersionObtain(this, handler, versionCode);
 			versionObtain.start();
 		} catch (NameNotFoundException e) {
 			Log.d(TAG, e.getMessage(), e);
@@ -183,7 +180,7 @@ public class MainActivity extends Activity implements
 		public void handleMessage(Message msg) {
 
 			switch (msg.what) {
-			case Constants.What.LIST:
+			case Constants.What.Donglixia.LIST:
 
 				// 第一次加载把之前的给清掉
 				if (1 == page) {
@@ -192,7 +189,7 @@ public class MainActivity extends Activity implements
 
 				// 总条数
 				total = msg.arg2;
-				
+
 				list.addAll((List<Donglixia>) msg.obj);
 				mAdapter.notifyDataSetChanged();
 				mHasRequestedMore = false;
@@ -200,7 +197,7 @@ public class MainActivity extends Activity implements
 
 				// 页数+1
 				page++;
-				
+
 				break;
 			case Constants.What.VERSION:
 				// 版本低提示
@@ -217,37 +214,34 @@ public class MainActivity extends Activity implements
 	};
 
 	private void showUpdate() {
-		mMaterialDialog.setTitle("提示").setMessage("您当前不是最新版本是否更新？")
-				.setPositiveButton("确定", new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						mMaterialDialog.dismiss();
+		mMaterialDialog.setTitle("提示").setMessage("您当前不是最新版本是否更新？").setPositiveButton("确定", new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mMaterialDialog.dismiss();
 
-						// 打开App主页
-						Uri uri = Uri.parse(Constants.Server.home());
-						Intent it = new Intent(Intent.ACTION_VIEW, uri);
-						startActivity(it);
-					}
-				}).setNegativeButton("取消", new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						mMaterialDialog.dismiss();
-					}
-				}).setCanceledOnTouchOutside(false).show();
+				// 打开App主页
+				Uri uri = Uri.parse(Constants.Server.home());
+				Intent it = new Intent(Intent.ACTION_VIEW, uri);
+				startActivity(it);
+			}
+		}).setNegativeButton("取消", new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mMaterialDialog.dismiss();
+			}
+		}).setCanceledOnTouchOutside(false).show();
 	}
 
 	@Override
-	public void onScrollStateChanged(final AbsListView view,
-			final int scrollState) {
+	public void onScrollStateChanged(final AbsListView view, final int scrollState) {
 		Log.d(TAG, "onScrollStateChanged:" + scrollState);
 	}
 
 	@Override
-	public void onScroll(final AbsListView view, final int firstVisibleItem,
-			final int visibleItemCount, final int totalItemCount) {
-		Log.d(TAG, "onScroll firstVisibleItem:" + firstVisibleItem
-				+ " visibleItemCount:" + visibleItemCount + " totalItemCount:"
-				+ totalItemCount);
+	public void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount,
+			final int totalItemCount) {
+		Log.d(TAG, "onScroll firstVisibleItem:" + firstVisibleItem + " visibleItemCount:" + visibleItemCount
+				+ " totalItemCount:" + totalItemCount);
 		// 是否加载，不能超过总条数
 		if (!mHasRequestedMore && total > totalItemCount) {
 			int lastInScreen = firstVisibleItem + visibleItemCount;
@@ -260,28 +254,24 @@ public class MainActivity extends Activity implements
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> adapterView, View view,
-			int position, long id) {
+	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 		try {
 			Donglixia d = list.get(position - 1);
 			// 空对象
-			if(null == d || null == d.getUrl())
-			{
+			if (null == d || null == d.getUrl()) {
 				return;
 			}
 			// 请求数据然后缓存
 			InfoObtain infoObtain = new InfoObtain(this, handler, d.getId());
 			infoObtain.start();
 
-			Intent intent = new Intent(MainActivity.this,
-					ViewPagerActivity.class);
+			Intent intent = new Intent(MainActivity.this, ViewPagerActivity.class);
 			// 将当前的图片传上去
 			intent.putExtra(Constants.Extra.URLS, new String[] { d.getUrl() });
 			intent.putExtra(Constants.Extra.IMAGE_POSITION, 0);
 			intent.putExtra(Constants.Extra.ID, d.getId());
 
 			// 创建详情页
-			intent.putExtra(Constants.Extra.CREATE_INFO, true);
 			startActivity(intent);
 
 			// 动画
@@ -309,6 +299,7 @@ public class MainActivity extends Activity implements
 				backLastPressedTime = now;
 			} else {
 				super.onBackPressed();
+				ImageLoader.getInstance().stop();
 				System.gc();
 				this.finish();
 			}

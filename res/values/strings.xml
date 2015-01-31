@@ -2,6 +2,11 @@
 <resources>
 
     <string name="app_name">东篱下</string>
-    <string name="menu_settings">Settings</string>
+    <string name="title_donglixia">东篱下</string>
+    <string name="title_native">本地</string>
+    <string name="image_count">%1$s张</string>
+    <string name="menu_upload">上传图片</string>
+    <string name="menu_personal">个人中心</string>
+    <string name="menu_settings">设置</string>
 
 </resources>

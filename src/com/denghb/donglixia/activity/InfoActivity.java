@@ -82,7 +82,7 @@ public class InfoActivity extends Activity implements
 		@Override
 		public void handleMessage(Message msg) {
 
-			if (msg.what == Constants.What.INFO) {
+			if (msg.what == Constants.What.Donglixia.INFO) {
 				List<Donglixia> temp = new ArrayList<Donglixia>();
 
 				urls = (String[]) msg.obj;
