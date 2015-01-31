@@ -1,4 +1,4 @@
-package com.denghb.donglixia.widget.materialdialog;
+package com.denghb.donglixia.widget;
 
 import com.denghb.donglixia.R;
 

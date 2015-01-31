@@ -90,6 +90,7 @@ public class ImageListActivity extends Activity implements OnItemClickListener {
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         Intent i = new Intent(this, ViewPagerActivity.class);
         i.putStringArrayListExtra(Constants.Extra.URLS,mImages);
+        i.putExtra(Constants.Extra.IMAGE_POSITION, arg2);
         startActivity(i);
     }
 

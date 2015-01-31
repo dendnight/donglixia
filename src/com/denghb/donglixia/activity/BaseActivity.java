@@ -3,6 +3,7 @@ package com.denghb.donglixia.activity;
 import com.denghb.donglixia.R;
 import com.denghb.donglixia.fragment.DonglixiaFragment;
 import com.denghb.donglixia.fragment.NativeFragment;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 /**
  * 
@@ -80,5 +83,32 @@ public class BaseActivity extends FragmentActivity {
 				return null;
 			}
 		}
+	}
+
+	/** 上一次按back的时间ms */
+	private long backLastPressedTime;
+
+	/** 2次back的最大允许的间隔，超过这个时间将重新计算 */
+	private static final long BACK_CHECK_INTERVAL = 10000;
+	
+	// 处理后退键的情况
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+			long now = System.currentTimeMillis();
+			if (now - backLastPressedTime > BACK_CHECK_INTERVAL) {
+				Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
+				backLastPressedTime = now;
+			} else {
+				super.onBackPressed();
+				ImageLoader.getInstance().stop();
+				System.gc();
+				this.finish();
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+
 	}
 }

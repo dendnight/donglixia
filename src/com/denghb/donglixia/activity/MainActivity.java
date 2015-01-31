@@ -10,8 +10,8 @@ import com.denghb.donglixia.obtain.InfoObtain;
 import com.denghb.donglixia.obtain.MainObtain;
 import com.denghb.donglixia.obtain.VersionObtain;
 import com.denghb.donglixia.tools.Helper;
+import com.denghb.donglixia.widget.MaterialDialog;
 import com.denghb.donglixia.widget.StaggeredGridView;
-import com.denghb.donglixia.widget.materialdialog.MaterialDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.annotation.SuppressLint;
