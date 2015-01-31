@@ -59,6 +59,8 @@ public class DonglixiaFragment extends BaseFragment implements AbsListView.OnScr
 	private String tag = "";
 	private int total = 1;
 
+	private View footerView;
+
 	private MaterialDialog mMaterialDialog;
 
 	/** 是否请求查询 */
@@ -74,8 +76,11 @@ public class DonglixiaFragment extends BaseFragment implements AbsListView.OnScr
 
 	@SuppressLint("NewApi")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_donglixia, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup root, Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_donglixia, root, false);
+
+		isRequest();
+
 		mGridView = (StaggeredGridView) rootView.findViewById(R.id.grid_view_donglixia);
 
 		list = Helper.generateSampleData(10);
@@ -84,7 +89,11 @@ public class DonglixiaFragment extends BaseFragment implements AbsListView.OnScr
 		mGridView.setAdapter(mAdapter);
 		mGridView.setOnScrollListener(this);
 		mGridView.setOnItemClickListener(this);
-		request();
+
+		footerView = inflater.inflate(R.layout.item_footer, null);
+		footerView.setVisibility(View.GONE);
+		mGridView.addFooterView(footerView);
+
 		return rootView;
 	}
 
@@ -222,6 +231,14 @@ public class DonglixiaFragment extends BaseFragment implements AbsListView.OnScr
 				Log.d(TAG, "onScroll lastInScreen - so load more");
 				mHasRequestedMore = true;
 				isRequest();
+			}
+		}
+		// 显示没有更多的了
+		if (null != footerView) {
+			if (total == totalItemCount) {
+				footerView.setVisibility(View.VISIBLE);
+			} else {
+				footerView.setVisibility(View.GONE);
 			}
 		}
 	}
